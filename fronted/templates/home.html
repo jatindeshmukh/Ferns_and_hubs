@@ -1,0 +1,409 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ferns 'N Herbs - Plant Nursery{% endblock %}
+
+{% block welcome_message %}
+<!-- Override welcome message for home page -->
+<div class="container mt-3">
+  {% if user.is_authenticated %}
+    <div class="user-welcome-container">
+      <p class="user-welcome-text">
+        <i class="fas fa-user-check me-2"></i>Welcome back, <strong>{{ user.username }}</strong>! Discover beautiful plants for your home and garden.
+      </p>
+    </div>
+  {% else %}
+    <div class="guest-welcome-container">
+      <p class="guest-welcome-text">
+        <i class="fas fa-user-clock me-2"></i>Welcome to FernsHub! 
+        <a href="{% url 'login' %}" class="fw-bold text-decoration-none">Login</a> for personalized recommendations and faster checkout.
+      </p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Category Highlights -->
+<div class="container mt-3">
+  <div class="category-scroll d-flex overflow-auto py-2">
+
+    <!-- Indoor Plants -->
+    <div class="category-item text-center me-3" data-category="Indoor Plants">
+      <a href="{% url 'indoor_plants' %}" class="text-decoration-none text-dark">
+        <img src="{% static 'images/plant category/1.png' %}" alt="Indoor Plants" class="img-fluid category-img">
+        <p class="fw-semibold mt-2">Indoor Plants</p>
+      </a>
+    </div>
+
+    <!-- Outdoor Plants -->
+    <div class="category-item text-center me-3" data-category="Outdoor Plants">
+      <a href="{% url 'outdoor_plants' %}" class="text-decoration-none text-dark">
+        <img src="{% static 'images/plant category/2.png' %}" alt="Outdoor Plants" class="img-fluid category-img">
+        <p class="fw-semibold mt-2">Outdoor Plants</p>
+      </a>
+    </div>
+
+    <!-- Medicinal Plants -->
+    <div class="category-item text-center me-3" data-category="Medicinal Plants">
+      <a href="{% url 'medicinal_plants' %}" class="text-decoration-none text-dark">
+        <img src="{% static 'images/plant category/3.png' %}" alt="Medicinal Plants" class="img-fluid category-img">
+        <p class="fw-semibold mt-2">Medicinal Plants</p>
+      </a>
+    </div>
+
+    <!-- Flowering Plants -->
+    <div class="category-item text-center me-3" data-category="Flowering Plants">
+      <a href="{% url 'flowering_plants' %}" class="text-decoration-none text-dark">
+        <img src="{% static 'images/plant category/4.png' %}" alt="Flowering Plants" class="img-fluid category-img">
+        <p class="fw-semibold mt-2">Flowering Plants</p>
+      </a>
+    </div>
+
+    <!-- Foliage Plants -->
+    <div class="category-item text-center me-3" data-category="Foliage Plants">
+      <a href="{% url 'foliage_plants' %}" class="text-decoration-none text-dark">
+        <img src="{% static 'images/plant category/5.png' %}" alt="Foliage Plants" class="img-fluid category-img">
+        <p class="fw-semibold mt-2">Foliage Plants</p>
+      </a>
+    </div>
+
+    <!-- Ferns & Palms -->
+    <div class="category-item text-center me-3" data-category="Ferns & Palms">
+      <a href="{% url 'ferns_palms' %}" class="text-decoration-none text-dark">
+        <img src="{% static 'images/plant category/6.png' %}" alt="Ferns & Palms" class="img-fluid category-img">
+        <p class="fw-semibold mt-2">Ferns & Palms</p>
+      </a>
+    </div>
+
+    <!-- Succulents & Cactus -->
+    <div class="category-item text-center me-3" data-category="Succulents & Cactus">
+      <a href="{% url 'succulents_cactus' %}" class="text-decoration-none text-dark">
+        <img src="{% static 'images/plant category/7.png' %}" alt="Succulents & Cactus" class="img-fluid category-img">
+        <p class="fw-semibold mt-2">Succulents & Cactus</p>
+      </a>
+    </div>
+
+    <!-- Fruit & Vegetable Plants -->
+    <div class="category-item text-center me-3" data-category="Fruit & Vegetable Plants">
+      <a href="{% url 'fruit_vegetable_plants' %}" class="text-decoration-none text-dark">
+        <img src="{% static 'images/plant category/8.png' %}" alt="Fruit & Vegetable Plants" class="img-fluid category-img">
+        <p class="fw-semibold mt-2">Fruit & Vegetable Plants</p>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- Banner -->
+<section class="container my-4">
+  <div id="carouselBanner" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+    <div class="carousel-inner rounded">
+      <div class="carousel-item active">
+        <img src="{% static 'images/bannerimage/banner1.png' %}" class="d-block w-100" alt="Banner 1">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/bannerimage/banner2.png' %}" class="d-block w-100" alt="Banner 2">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/bannerimage/banner3.png' %}" class="d-block w-100" alt="Banner 3">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselBanner" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselBanner" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+</section>
+
+<!-- Shop by Category -->
+<div class="container category-section my-5" id="categories">
+  <h2 class="fw-bold mb-4 text-center">Shop by Category</h2>
+  <div class="row g-4 justify-content-center">
+
+    <!-- Gardening Essentials -->
+    <div class="col-6 col-md-4 col-lg-2">
+      <a href="{% url 'gardening_essentials' %}" class="text-decoration-none text-dark">
+        <div class="category-card">
+          <img src="{% static 'images/category/1.png' %}" alt="Gardening Essentials">
+          <div class="category-title">Gardening Essentials</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Miniature Garden Toys -->
+    <div class="col-6 col-md-4 col-lg-2">
+      <a href="{% url 'miniature_garden' %}" class="text-decoration-none text-dark">
+        <div class="category-card">
+          <img src="{% static 'images/category/2.png' %}" alt="Miniature Garden Toys">
+          <div class="category-title">Miniature Garden Toys</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Sustainable Giftings -->
+    <div class="col-6 col-md-4 col-lg-2">
+      <a href="{% url 'sustainable_gifting' %}" class="text-decoration-none text-dark">
+        <div class="category-card">
+          <img src="{% static 'images/category/3.png' %}" alt="Sustainable Giftings">
+          <div class="category-title">Sustainable Giftings</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Building Blocks -->
+    <div class="col-6 col-md-4 col-lg-2">
+      <a href="{% url 'building_blocks' %}" class="text-decoration-none text-dark">
+        <div class="category-card">
+          <img src="{% static 'images/category/4.png' %}" alt="Building Blocks">
+          <div class="category-title">Building Blocks</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Sustainable Living -->
+    <div class="col-6 col-md-4 col-lg-2">
+      <a href="{% url 'sustainable_living' %}" class="text-decoration-none text-dark">
+        <div class="category-card">
+          <img src="{% static 'images/category/5.png' %}" alt="Sustainable Living">
+          <div class="category-title">Sustainable Living</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Plants -->
+    <div class="col-6 col-md-4 col-lg-2">
+      <a href="{% url 'plants_collection' %}" class="text-decoration-none text-dark">
+        <div class="category-card">
+          <img src="{% static 'images/category/6.png' %}" alt="Plants">
+          <div class="category-title">Plants</div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- 🪴 Product Section (Dynamic) -->
+<section id="products" class="products-section py-5 bg-light">
+  <div class="container">
+    <div class="section-title text-center mb-4">
+      <h2>Explore Our Products</h2>
+      <p>Discover beautiful plants perfect for your home and garden</p>
+    </div>
+
+    <div class="row">
+      {% for product in products %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card product-card shadow-sm h-100">
+          {% if product.image %}
+          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+          {% else %}
+          <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="No image available">
+          {% endif %}
+
+          <div class="card-body text-center d-flex flex-column">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text flex-grow-1">{{ product.description|truncatewords:15 }}</p>
+            <p class="product-price fw-bold">₹{{ product.price }}</p>
+            <div class="d-flex justify-content-between">
+              <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-success btn-sm">View Product</a>
+              {% if user.is_authenticated %}
+              <button class="btn btn-success btn-sm add-to-cart" data-product-id="{{ product.id }}">
+                <i class="fas fa-cart-plus"></i> Add to Cart
+              </button>
+              {% else %}
+              <a href="{% url 'login' %}" class="btn btn-success btn-sm">
+                <i class="fas fa-cart-plus"></i> Add to Cart
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="text-center">
+        <p>No products available right now. Check back soon!</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- See More Products Button -->
+    {% if products %}
+    <div class="see-more-container">
+      <a href="{% url 'all_products' %}" class="btnsee">
+        <i class="fas fa-store me-2"></i>View All Products
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="container my-5">
+  <h2 class="text-center mb-4 text-success">Our Services</h2>
+  <div class="row g-4">
+    <div class="col-md-4 text-center">
+      <div class="service-card p-3 border rounded h-100">
+        <i class="fas fa-seedling fa-2x mb-3 text-success"></i>
+        <h5>Plant Consultation</h5>
+        <p>Get expert advice on choosing the right plants for your space and needs.</p>
+      </div>
+    </div>
+    <div class="col-md-4 text-center">
+      <div class="service-card p-3 border rounded h-100">
+        <i class="fas fa-truck fa-2x mb-3 text-success"></i>
+        <h5>Delivery Service</h5>
+        <p>We deliver plants right to your doorstep, carefully packaged and protected.</p>
+      </div>
+    </div>
+    <div class="col-md-4 text-center">
+      <div class="service-card p-3 border rounded h-100">
+        <i class="fas fa-spa fa-2x mb-3 text-success"></i>
+        <h5>Gardening Services</h5>
+        <p>Transform your outdoor space into a beautiful garden oasis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- We deliver to almost all cities -->
+<div class="container category-section my-5">
+  <h2 class="fw-bold mb-4 text-center">Delivery in most cities. Coming soon!</h2>
+  <div class="row g-4 justify-content-center">
+
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="category-card">
+        <img src="{% static 'images/category/pune.png' %}" alt="Pune">
+        <div class="category-title">Pune</div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="category-card">
+        <img src="{% static 'images/category/nagpur.png' %}" alt="Nagpur">
+        <div class="category-title">Nagpur</div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="category-card">
+        <img src="{% static 'images/category/mumbai.png' %}" alt="Mumbai">
+        <div class="category-title">Mumbai</div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="category-card">
+        <img src="{% static 'images/category/hyderbad.png' %}" alt="Hyderabad">
+        <div class="category-title">Hyderabad</div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="category-card">
+        <img src="{% static 'images/category/banglore.png' %}" alt="Bangalore">
+        <div class="category-title">Bangalore</div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="category-card">
+        <img src="{% static 'images/category/delhi.png' %}" alt="Delhi">
+        <div class="category-title">Delhi</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Home page specific JavaScript can go here
+  
+  // Add to cart functionality for home page products
+  document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', function() {
+      const productId = this.getAttribute('data-product-id');
+      addToCart(productId);
+    });
+  });
+
+  // Initialize carousel with additional options
+  const carousel = new bootstrap.Carousel('#carouselBanner', {
+    interval: 3000,
+    wrap: true,
+    touch: true
+  });
+
+  // Add smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Category scroll enhancement
+  const categoryScroll = document.querySelector('.category-scroll');
+  if (categoryScroll) {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    categoryScroll.addEventListener('mousedown', (e) => {
+      isDown = true;
+      categoryScroll.classList.add('active');
+      startX = e.pageX - categoryScroll.offsetLeft;
+      scrollLeft = categoryScroll.scrollLeft;
+    });
+
+    categoryScroll.addEventListener('mouseleave', () => {
+      isDown = false;
+      categoryScroll.classList.remove('active');
+    });
+
+    categoryScroll.addEventListener('mouseup', () => {
+      isDown = false;
+      categoryScroll.classList.remove('active');
+    });
+
+    categoryScroll.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - categoryScroll.offsetLeft;
+      const walk = (x - startX) * 2;
+      categoryScroll.scrollLeft = scrollLeft - walk;
+    });
+
+    // Touch support for mobile
+    categoryScroll.addEventListener('touchstart', (e) => {
+      isDown = true;
+      startX = e.touches[0].pageX - categoryScroll.offsetLeft;
+      scrollLeft = categoryScroll.scrollLeft;
+    });
+
+    categoryScroll.addEventListener('touchend', () => {
+      isDown = false;
+    });
+
+    categoryScroll.addEventListener('touchmove', (e) => {
+      if (!isDown) return;
+      const x = e.touches[0].pageX - categoryScroll.offsetLeft;
+      const walk = (x - startX) * 2;
+      categoryScroll.scrollLeft = scrollLeft - walk;
+    });
+  }
+});
+</script>
+{% endblock %}

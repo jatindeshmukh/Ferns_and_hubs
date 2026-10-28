@@ -1,0 +1,361 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order Details - ORDER#{{ order.id }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header with Print Button -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="h3">Order Details</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'my_orders' %}">My Orders</a></li>
+                    <li class="breadcrumb-item active">ORDER#{{ order.id }}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-4 text-end">
+            <button onclick="printInvoice()" class="btn btn-success">
+                <i class="fas fa-print"></i> Print Invoice
+            </button>
+            <a href="{% url 'my_orders' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Orders
+            </a>
+        </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card order-card">
+                <div class="card-header">
+                    <h5 class="mb-0">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Order Number:</strong> ORDER#{{ order.id }}</p>
+                            <p><strong>Order Date:</strong> {{ order.created_at|date:"M d, Y H:i" }}</p>
+                            <p><strong>Status:</strong> 
+                                <span class="badge bg-{% if order.status == 'delivered' %}success{% elif order.status == 'cancelled' %}danger{% else %}warning{% endif %}">
+                                    {{ order.get_status_display }}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Total Amount:</strong> ₹{{ order.total_price }}</p>
+                            <p><strong>Payment Method:</strong> {{ order.get_payment_method_display }}</p>
+                            <p><strong>Items Count:</strong> {{ order.items.count }} items</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Customer Information -->
+        <div class="col-md-4">
+            <div class="card order-card">
+                <div class="card-header">
+                    <h5 class="mb-0">Customer Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Name:</strong> {{ order.user.username }}</p>
+                    <p><strong>Email:</strong> {{ order.user.email }}</p>
+                    {% if order.user.contact %}
+                    <p><strong>Contact:</strong> {{ order.user.contact }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Status Timeline -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card order-card">
+                <div class="card-header">
+                    <h5 class="mb-0">Order Status Timeline</h5>
+                </div>
+                <div class="card-body">
+                    <div class="status-timeline">
+                        {% for step in status_timeline %}
+                        <div class="status-step 
+                            {% if current_status_index >= forloop.counter0 %}completed{% endif %}
+                            {% if order.status == step.status %}current{% endif %}
+                            {% if current_status_index < forloop.counter0 %}pending{% endif %}">
+                            
+                            <div class="status-icon">
+                                <i class="fas 
+                                    {% if current_status_index >= forloop.counter0 %}fa-check{% else %}fa-{% cycle 'shopping-cart' 'check-circle' 'cog' 'shipping-fast' 'truck' 'box' %}{% endif %}">
+                                </i>
+                            </div>
+                            <div class="status-content">
+                                <h6 class="mb-1">{{ step.label }}</h6>
+                                <p class="mb-0 text-muted">{{ step.description }}</p>
+                                {% if order.status == step.status %}
+                                <small class="text-primary">Current Status</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Items -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card order-card">
+                <div class="card-header">
+                    <h5 class="mb-0">Order Items</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order.items.all %}
+                                <tr>
+                                    <td>{{ item.product.name }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>₹{{ item.price }}</td>
+                                    <td>₹{{ item.total_price }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
+                                    <td><strong>₹{{ order.total_price }}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shipping Address & Status History -->
+    <div class="row">
+        {% if order.address %}
+        <div class="col-md-6">
+            <div class="card order-card">
+                <div class="card-header">
+                    <h5 class="mb-0">Shipping Address</h5>
+                </div>
+                <div class="card-body">
+                    <p>{{ order.address.full_name }}</p>
+                    <p>{{ order.address.street_address }}</p>
+                    <p>{{ order.address.city }}, {{ order.address.state }} - {{ order.address.postal_code }}</p>
+                    <p>{{ order.address.country }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Status History -->
+        <div class="col-md-{% if order.address %}6{% else %}12{% endif %}">
+            <div class="card order-card">
+                <div class="card-header">
+                    <h5 class="mb-0">Status History</h5>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        {% for history in order.status_history.all %}
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-circle text-{% if history.status == 'delivered' %}success{% elif history.status == 'cancelled' %}danger{% else %}info{% endif %}"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-1">{{ history.get_status_display }}</h6>
+                                <p class="mb-1 text-muted">{{ history.note }}</p>
+                                <small class="text-muted">{{ history.created_at|date:"M d, Y H:i" }}</small>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted">No status history available.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden Invoice for Printing -->
+<div id="invoice-content" style="display: none;">
+    <div id="printable-invoice">
+        <div class="invoice-header" style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px;">
+            <h1 style="color: #28a745; margin: 0;">Fernshub</h1>
+            <p style="margin: 5px 0; color: #666;">Plant Nursery & Garden Center</p>
+            <p style="margin: 5px 0; color: #666;">INVOICE</p>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 30px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 250px;">
+                <h3>Bill To:</h3>
+                <p><strong>{{ order.user.username }}</strong></p>
+                <p>{{ order.user.email }}</p>
+                {% if order.user.contact %}<p>{{ order.user.contact }}</p>{% endif %}
+                {% if order.address %}
+                <p>{{ order.address.street_address }}</p>
+                <p>{{ order.address.city }}, {{ order.address.state }} - {{ order.address.postal_code }}</p>
+                <p>{{ order.address.country }}</p>
+                {% endif %}
+            </div>
+            <div style="text-align: right; flex: 1; min-width: 250px;">
+                <h3>Invoice Details:</h3>
+                <p><strong>Order #:</strong> ORDER{{ order.id }}</p>
+                <p><strong>Date:</strong> {{ order.created_at|date:"M d, Y" }}</p>
+                <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+                <p><strong>Payment:</strong> {{ order.get_payment_method_display }}</p>
+            </div>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+            <thead>
+                <tr style="background-color: #f8f9fa;">
+                    <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Product</th>
+                    <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Quantity</th>
+                    <th style="border: 1px solid #ddd; padding: 12px; text-align: right;">Price</th>
+                    <th style="border: 1px solid #ddd; padding: 12px; text-align: right;">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 12px;">{{ item.product.name }}</td>
+                    <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">{{ item.quantity }}</td>
+                    <td style="border: 1px solid #ddd; padding: 12px; text-align: right;">₹{{ item.price }}</td>
+                    <td style="border: 1px solid #ddd; padding: 12px; text-align: right;">₹{{ item.total_price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="border: 1px solid #ddd; padding: 12px; text-align: right; font-weight: bold;">Total Amount:</td>
+                    <td style="border: 1px solid #ddd; padding: 12px; text-align: right; font-weight: bold;">₹{{ order.total_price }}</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                <div>
+                    <h4>Thank You!</h4>
+                    <p>We appreciate your business.</p>
+                </div>
+                <div style="text-align: center;">
+                    <p><strong>Fernshub</strong></p>
+                    <p>Plant Nursery & Garden Center</p>
+                    <p>Contact: support@fernshub.com</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; text-align: center; color: #666; font-size: 12px;">
+            <p>This is a computer-generated invoice. No signature required.</p>
+            <p>Generated on: {% now "M d, Y H:i" %}</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .status-timeline {
+        position: relative;
+        padding: 20px 0;
+    }
+    .status-step {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+        position: relative;
+    }
+    .status-step.completed .status-icon { background-color: #28a745; color: white; }
+    .status-step.current .status-icon { background-color: #007bff; color: white; border-color: #007bff; }
+    .status-step.pending .status-icon { background-color: #6c757d; color: white; }
+    .status-icon {
+        width: 40px; height: 40px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        border: 2px solid #dee2e6; z-index: 2; position: relative;
+    }
+    .status-content { margin-left: 15px; }
+    .status-step:not(:last-child):after {
+        content: ''; position: absolute; left: 19px; top: 40px; bottom: -30px; width: 2px; background-color: #dee2e6;
+    }
+    .status-step.completed:not(:last-child):after { background-color: #28a745; }
+    .order-card { border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .card-header { background-color: #f8f9fa; border-bottom: 1px solid #dee2e6; }
+
+    /* Print Styles */
+    @media print {
+        @page { size: A4; margin: 0.5in; }
+        body * { visibility: hidden; }
+        #printable-invoice, #printable-invoice * { visibility: visible; }
+        #printable-invoice { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; }
+        .no-print { display: none !important; }
+        .invoice-header { border-bottom: 2px solid #000 !important; }
+        table { page-break-inside: auto; }
+        tr { page-break-inside: avoid; page-break-after: auto; }
+    }
+</style>
+
+<script>
+function printInvoice() {
+    const invoiceContent = document.getElementById('printable-invoice').innerHTML;
+    const printWindow = window.open('', '_blank', 'width=900,height=700,scrollbars=yes,resizable=yes');
+    
+    if (!printWindow) {
+        alert("Please allow popups to print the invoice.");
+        return;
+    }
+
+    printWindow.document.open();
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+            <title>Invoice - ORDER#{{ order.id }}</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 0; padding: 20px; color: #333; }
+                .invoice-header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px; }
+                table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+                th, td { border: 1px solid #ddd; padding: 12px; text-align: left; word-break: break-word; }
+                th { background-color: #f8f9fa; font-weight: bold; }
+                .text-right { text-align: right; }
+                .text-center { text-align: center; }
+                @page { size: A4; margin: 0.5in; }
+                @media print { body { zoom: 90%; } }
+            </style>
+        </head>
+        <body>${invoiceContent}</body>
+        </html>
+    `);
+    printWindow.document.close();
+
+    // Ensure print fires correctly after load
+    printWindow.onload = function() {
+        setTimeout(() => {
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+        }, 500);
+    };
+}
+</script>
+{% endblock %}

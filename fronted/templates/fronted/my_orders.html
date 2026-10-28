@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Orders - FernsHub{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">My Orders</h2>
+
+    {% if order_list %}
+        {% for entry in order_list %}
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Order #{{ entry.order.id }}</strong> 
+                        <span class="badge bg-{{ entry.order.status|yesno:'success,warning,info,secondary,secondary' }} text-capitalize">
+                            {{ entry.order.status }}
+                        </span>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <small class="text-muted">
+                            Placed on {{ entry.order.created_at|date:"M d, Y" }} | 
+                            Est. Delivery: {{ entry.estimated_delivery }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <!-- Timeline -->
+                <div class="timeline mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        {% for item in entry.timeline %}
+                        <div class="text-center flex-fill position-relative">
+                            <div class="timeline-dot 
+                                {% if item.class == 'completed' %}bg-success text-white
+                                {% elif item.class == 'active' %}bg-primary text-white
+                                {% else %}bg-light border{% endif %}">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <small class="d-block mt-1 text-capitalize">{{ item.display_name }}</small>
+                        </div>
+                        {% if not forloop.last %}
+                        <div class="flex-fill border-top position-relative" style="top: 12px;"></div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Order Items -->
+                <div class="row">
+                    {% for item in entry.items %}
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex">
+                            {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="me-3" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                            {% else %}
+                            <div class="bg-light me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; border-radius: 8px;">
+                                <i class="fas fa-image text-muted"></i>
+                            </div>
+                            {% endif %}
+                            <div>
+                                <strong>{{ item.product.name }}</strong><br>
+                                <small>Qty: {{ item.quantity }} × ₹{{ item.price }} = ₹{{ item.total_price }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <hr>
+
+                <!-- Total & Action -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Total: ₹{{ entry.order.total_price }}</strong>
+                        {% if entry.order.tax_amount > 0 %}
+                        <small class="text-muted">(incl. ₹{{ entry.order.tax_amount }} tax)</small>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'order_confirmation' entry.order.id %}" class="btn btn-sm btn-outline-primary">
+                        View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-shopping-bag fa-3x text-muted mb-3"></i>
+            <h5>No orders yet</h5>
+            <p class="text-muted">When you place an order, it will appear here.</p>
+            <a href="{% url 'all_products' %}" class="btn btn-success">Start Shopping</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .timeline-dot {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        font-size: 14px;
+        border: 2px solid #dee2e6;
+    }
+    .timeline-dot.bg-light {
+        background-color: #f8f9fa !important;
+    }
+</style>
+{% endblock %}

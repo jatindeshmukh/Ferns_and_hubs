@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blog – Ferns & Hub{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="bg-light py-5 text-center">
+  <div class="container">
+    <h1 class="fw-bold">Ferns & Hub Blog</h1>
+    <p class="lead text-muted">Explore the world of plants, gardening tips, and green lifestyle inspiration.</p>
+  </div>
+</section>
+
+<!-- Blog Container -->
+<div class="container py-5">
+
+    <!-- Blog Section: Indoor Plants -->
+    <div class="row mb-5 align-items-center">
+        <div class="col-md-6">
+            <h2 class="fw-bold">Indoor Plants</h2>
+            <p>Indoor plants improve air quality, reduce stress, and elevate your home aesthetics. These low-maintenance greens thrive in indirect light—perfect for busy plant lovers.</p>
+            <ul>
+              <li>Snake Plant</li>
+              <li>ZZ Plant</li>
+              <li>Peace Lily</li>
+              <li>Monstera</li>
+            </ul>
+        </div>
+       {% load static %}
+<div class="col-md-6 text-center">
+    <img src="{% static 'images/indoor-plants.png' %}" class="img-fluid rounded shadow" alt="Indoor Plants">
+</div>
+
+
+    <!-- Outdoor Plants -->
+    <div class="row mb-5 flex-md-row-reverse align-items-center">
+        <div class="col-md-6">
+            <h2 class="fw-bold">Outdoor Plants</h2>
+            <p>Bring nature home with lush outdoor plants that attract butterflies & birds while beautifying your space.</p>
+            <ul>
+              <li>Hibiscus</li>
+              <li>Bougainvillea</li>
+              <li>Jasmine</li>
+              <li>Ashoka</li>
+            </ul>
+        </div>
+        <div class="col-md-6 text-center">
+            <img src="https://images.unsplash.com/photo-1588440578800-87b2860be3bb" class="img-fluid rounded shadow" alt="Outdoor Plants">
+        </div>
+    </div>
+
+    <!-- Medicinal Plants -->
+    <div class="row mb-5 align-items-center">
+        <div class="col-md-6">
+            <h2 class="fw-bold">Medicinal Plants</h2>
+            <p>Adopt Ayurveda at home with natural immunity-boosting plants for everyday wellness.</p>
+            <ul>
+              <li>Tulsi</li>
+              <li>Aloe Vera</li>
+              <li>Neem</li>
+              <li>Lemongrass</li>
+            </ul>
+        </div>
+        <div class="col-md-6 text-center">
+            <img src="https://images.unsplash.com/photo-1604444529542-cb8a1488032f" class="img-fluid rounded shadow" alt="Medicinal Plants">
+        </div>
+    </div>
+
+    <!-- Succulents & Cactus -->
+    <div class="row mb-5 flex-md-row-reverse align-items-center">
+        <div class="col-md-6">
+            <h2 class="fw-bold">Succulents & Cactus</h2>
+            <p>Low-maintenance plants that thrive with minimal water — ideal for desktops & modern homes.</p>
+            <ul>
+              <li>Jade Plant</li>
+              <li>Aloe</li>
+              <li>Haworthia</li>
+              <li>Moon Cactus</li>
+            </ul>
+        </div>
+        <div class="col-md-6 text-center">
+            <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df" class="img-fluid rounded shadow" alt="Succulents">
+        </div>
+    </div>
+
+    <!-- Fruit & Vegetable Plants -->
+    <div class="row mb-5 align-items-center">
+        <div class="col-md-6">
+            <h2 class="fw-bold">Fruit & Vegetable Plants</h2>
+            <p>Grow your own organic food at home — fresh taste, zero chemicals, and total satisfaction!</p>
+            <ul>
+              <li>Lemon Plant</li>
+              <li>Tomato</li>
+              <li>Curry Leaves</li>
+              <li>Strawberry</li>
+            </ul>
+        </div>
+        <div class="col-md-6 text-center">
+            <img src="https://images.unsplash.com/photo-1524594081293-190a2fe0baae" class="img-fluid rounded shadow" alt="Vegetable Plants">
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

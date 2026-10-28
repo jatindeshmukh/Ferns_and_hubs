@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Privacy Policy - Ferns & Hub{% endblock %}
+
+{% block content %}
+
+<!-- Privacy Policy Header -->
+<div class="privacy-header">
+  <div class="container text-center">
+    <h1 class="display-5 fw-bold">Privacy Policy</h1>
+    <p class="lead">Your privacy is important to us. Learn how we protect your information.</p>
+    <p class="mb-0">Last updated: 04 November, 2025</p>
+  </div>
+</div>
+
+<!-- Privacy Policy Content -->
+<div class="container mb-5">
+  <div class="privacy-content">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-lg-3 d-none d-lg-block">
+        <div class="sticky-top" style="top: 100px;">
+          <h5 class="mb-3">Policy Sections</h5>
+          <nav class="nav nav-pills flex-column">
+            <a class="nav-link text-dark" href="#info-collect">Information We Collect</a>
+            <a class="nav-link text-dark" href="#info-use">How We Use Information</a>
+            <a class="nav-link text-dark" href="#info-share">Sharing Information</a>
+            <a class="nav-link text-dark" href="#cookies">Cookies & Tracking</a>
+            <a class="nav-link text-dark" href="#security">Data Security</a>
+            <a class="nav-link text-dark" href="#rights">Your Rights</a>
+            <a class="nav-link text-dark" href="#changes">Policy Changes</a>
+            <a class="nav-link text-dark" href="#contact">Contact Us</a>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Main Policy Accordion -->
+      <div class="col-lg-9">
+        <div class="accordion" id="privacyAccordion">
+
+          <!-- Information We Collect -->
+          <div class="accordion-item" id="info-collect">
+            <h2 class="accordion-header" id="pp1">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePP1">
+                Information We Collect
+              </button>
+            </h2>
+            <div id="collapsePP1" class="accordion-collapse collapse show" data-bs-parent="#privacyAccordion">
+              <div class="accordion-body">
+                We collect information to provide better services, including:
+                <ul>
+                  <li><strong>Personal Information</strong> – Name, email, phone number, shipping/billing address, payment details.</li>
+                  <li><strong>Order Information</strong> – Purchase history, preferences, delivery details.</li>
+                  <li><strong>Technical Data</strong> – IP address, browser type, device details, cookies.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- How We Use Your Information -->
+          <div class="accordion-item" id="info-use">
+            <h2 class="accordion-header" id="pp2">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePP2">
+                How We Use Your Information
+              </button>
+            </h2>
+            <div id="collapsePP2" class="accordion-collapse collapse" data-bs-parent="#privacyAccordion">
+              <div class="accordion-body">
+                We use your data to:
+                <ul>
+                  <li>Process and deliver your orders.</li>
+                  <li>Provide customer support and order updates.</li>
+                  <li>Send promotional offers and newsletters (optional).</li>
+                  <li>Improve our website and shopping experience.</li>
+                  <li>Comply with legal obligations and prevent fraud.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sharing of Information -->
+          <div class="accordion-item" id="info-share">
+            <h2 class="accordion-header" id="pp3">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePP3">
+                Sharing of Information
+              </button>
+            </h2>
+            <div id="collapsePP3" class="accordion-collapse collapse" data-bs-parent="#privacyAccordion">
+              <div class="accordion-body">
+                We do not sell or rent your personal data. However, we may share information with trusted third parties such as:
+                <ul>
+                  <li>Shipping and delivery partners.</li>
+                  <li>Payment gateway providers.</li>
+                  <li>Service providers who help us operate our website.</li>
+                  <li>Legal authorities, if required by law.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cookies & Tracking -->
+          <div class="accordion-item" id="cookies">
+            <h2 class="accordion-header" id="pp4">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePP4">
+                Cookies & Tracking
+              </button>
+            </h2>
+            <div id="collapsePP4" class="accordion-collapse collapse" data-bs-parent="#privacyAccordion">
+              <div class="accordion-body">
+                Our website uses cookies to:
+                <ul>
+                  <li>Remember your preferences and login details.</li>
+                  <li>Keep items in your shopping cart.</li>
+                  <li>Analyze traffic and improve website performance.</li>
+                </ul>
+                You can disable cookies in your browser, but some features may not work properly.
+              </div>
+            </div>
+          </div>
+
+          <!-- Data Security -->
+          <div class="accordion-item" id="security">
+            <h2 class="accordion-header" id="pp5">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePP5">
+                Data Security
+              </button>
+            </h2>
+            <div id="collapsePP5" class="accordion-collapse collapse" data-bs-parent="#privacyAccordion">
+              <div class="accordion-body">
+                We take appropriate measures to protect your personal information through encryption, secure servers, and trusted payment gateways. However, no system is completely secure, and we cannot guarantee 100% protection.
+              </div>
+            </div>
+          </div>
+
+          <!-- Your Rights -->
+          <div class="accordion-item" id="rights">
+            <h2 class="accordion-header" id="pp6">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePP6">
+                Your Rights
+              </button>
+            </h2>
+            <div id="collapsePP6" class="accordion-collapse collapse" data-bs-parent="#privacyAccordion">
+              <div class="accordion-body">
+                You have the right to:
+                <ul>
+                  <li>Access, update, or correct your personal information.</li>
+                  <li>Request deletion of your data (subject to legal requirements).</li>
+                  <li>Opt out of marketing communications.</li>
+                </ul>
+                <div class="contact-info mt-3">
+                  To exercise these rights, contact us at <strong>privacy@fernshub.com</strong>.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Changes to Policy -->
+          <div class="accordion-item" id="changes">
+            <h2 class="accordion-header" id="pp7">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePP7">
+                Changes to This Policy
+              </button>
+            </h2>
+            <div id="collapsePP7" class="accordion-collapse collapse" data-bs-parent="#privacyAccordion">
+              <div class="accordion-body">
+                We may update this Privacy Policy from time to time. The updated version will always be available on this page with the revised <strong>Effective Date</strong>.
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Us -->
+          <div class="accordion-item" id="contact">
+            <h2 class="accordion-header" id="pp8">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePP8">
+                Contact Us
+              </button>
+            </h2>
+            <div id="collapsePP8" class="accordion-collapse collapse" data-bs-parent="#privacyAccordion">
+              <div class="accordion-body">
+                If you have any questions or concerns about our Privacy Policy, please contact us:
+                <br><br>
+                <div class="contact-info">
+                  📧 Email: <strong>privacy@fernshub.com</strong><br>
+                  📞 Phone: <strong>766804589</strong><br>
+                  📍 Address: <strong>Pune</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  .privacy-header {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+    border-radius: 0 0 20px 20px;
+  }
+  .privacy-content {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    padding: 2rem;
+  }
+  .accordion-button:not(.collapsed) {
+    background-color: #f8f9fa;
+    color: #28a745;
+    font-weight: 600;
+  }
+  .contact-info {
+    background-color: #e9f7ef;
+    border-left: 4px solid #28a745;
+    padding: 1rem 1.5rem;
+    border-radius: 5px;
+  }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.querySelector(this.getAttribute('href')).scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
+  });
+</script>
+{% endblock %}

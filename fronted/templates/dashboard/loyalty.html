@@ -1,0 +1,13 @@
+<!-- Loyalty Points Section -->
+<section id="loyalty" class="tab-content">
+    <h2 class="section-title">Loyalty Points</h2>
+    <div class="loyalty-card">
+        <h3>Your Points Balance</h3>
+        <div class="points">{{ user.points|default:0 }}</div>
+        <p>Earn more points by shopping and referring friends!</p>
+        <div class="mt-4">
+            <button class="btn btn-light me-2 mb-2">Redeem Points</button>
+            <button class="btn btn-outline-light mb-2">How to Earn</button>
+        </div>
+    </div>
+</section>

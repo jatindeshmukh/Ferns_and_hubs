@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Shipping & Returns - Ferns 'N Herbs{% endblock %}
+
+{% block content %}
+
+<!-- Shipping & Returns Section -->
+<div class="container my-5">
+  <h2 class="text-center mb-4">Shipping & Returns</h2>
+  <div class="accordion" id="shippingAccordion">
+
+    <!-- Shipping Policy -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="ship1">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShip1">
+          Shipping Policy
+        </button>
+      </h2>
+      <div id="collapseShip1" class="accordion-collapse collapse show" data-bs-parent="#shippingAccordion">
+        <div class="accordion-body">
+          We ship across India. Orders are usually processed within 1–3 business days. Delivery timelines may vary based on your location and chosen shipping option. 
+          <br><br>
+          <strong>Estimated Delivery:</strong>
+          <ul>
+            <li>Metro Cities: 3–5 working days</li>
+            <li>Tier 2 & Tier 3 Cities: 5–7 working days</li>
+            <li>Remote Locations: 7–10 working days</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shipping Charges -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="ship2">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShip2">
+          Shipping Charges
+        </button>
+      </h2>
+      <div id="collapseShip2" class="accordion-collapse collapse" data-bs-parent="#shippingAccordion">
+        <div class="accordion-body">
+          <ul>
+            <li><strong>Free Shipping</strong> on all orders above ₹999.</li>
+            <li>For orders below ₹999, a standard shipping fee of ₹49–₹99 applies depending on the location.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Tracking -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="ship3">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShip3">
+          Order Tracking
+        </button>
+      </h2>
+      <div id="collapseShip3" class="accordion-collapse collapse" data-bs-parent="#shippingAccordion">
+        <div class="accordion-body">
+          Once your order has been shipped, you will receive an email and SMS notification with a tracking link to monitor the progress of your delivery in real time.
+        </div>
+      </div>
+    </div>
+
+    <!-- Return Policy -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="ship4">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShip4">
+          Return Policy
+        </button>
+      </h2>
+      <div id="collapseShip4" class="accordion-collapse collapse" data-bs-parent="#shippingAccordion">
+        <div class="accordion-body">
+          We accept returns for damaged, defective, or incorrect items within <strong>7 days of delivery</strong>.
+          <br><br>
+          <strong>Conditions for Returns:</strong>
+          <ul>
+            <li>Items must be unused and in original packaging.</li>
+            <li>Proof of purchase (order ID/invoice) is required.</li>
+            <li>Certain items like live plants may not be eligible for return unless damaged during transit.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Refund Process -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="ship5">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShip5">
+          Refund Process
+        </button>
+      </h2>
+      <div id="collapseShip5" class="accordion-collapse collapse" data-bs-parent="#shippingAccordion">
+        <div class="accordion-body">
+          Refunds are processed within <strong>5–7 working days</strong> after approval. The refund will be credited to your original payment method (bank account, card, or wallet).
+        </div>
+      </div>
+    </div>
+
+    <!-- Exchange Policy -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="ship6">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShip6">
+          Exchange Policy
+        </button>
+      </h2>
+      <div id="collapseShip6" class="accordion-collapse collapse" data-bs-parent="#shippingAccordion">
+        <div class="accordion-body">
+          Exchanges are allowed for defective or incorrect products, subject to availability. Please contact our support team to initiate the exchange process.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  .accordion-button:not(.collapsed) {
+    background-color: #f8f9fa;
+    color: #28a745;
+    font-weight: 600;
+  }
+  .accordion-item {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 10px;
+  }
+  .accordion-body {
+    background-color: #fff;
+  }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Optionally handle smooth scrolling or custom behavior here
+</script>
+{% endblock %}

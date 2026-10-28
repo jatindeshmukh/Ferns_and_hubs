@@ -1,0 +1,69 @@
+<!-- Orders Section -->
+<section id="orders" class="tab-content">
+    <h2 class="section-title">My Orders</h2>
+
+    <div class="summary-boxes">
+        <div class="summary-box">
+            <h3>Total Orders</h3>
+            <p>{{ total_orders }}</p>
+        </div>
+        <div class="summary-box">
+            <h3>Delivered</h3>
+            <p>{{ delivered_count }}</p>
+        </div>
+        <div class="summary-box">
+            <h3>Pending</h3>
+            <p>{{ pending_count }}</p>
+        </div>
+        <div class="summary-box">
+            <h3>Total Spent</h3>
+            <p>₹{{ total_spent }}</p>
+        </div>
+    </div>
+
+    {% if orders %}
+        {% for order in orders %}
+            <div class="order-item" onclick="showOrderDetails({{ order.id }})">
+                <div class="d-flex justify-content-between align-items-start flex-wrap">
+                    <div class="mb-2">
+                        <strong>Order #{{ order.id }}</strong> 
+                        <span class="status-badge status-{{ order.status|lower }} ms-2">{{ order.get_status_display }}</span>
+                        <br>
+                        <small class="text-muted">Placed on: {{ order.created_at|date:"M d, Y H:i" }}</small>
+                    </div>
+                    <div class="text-end mb-2">
+                        <strong>₹{{ order.total_price }}</strong><br>
+                        <small class="text-muted">{{ order.orderitem_set.count }} item(s)</small>
+                    </div>
+                </div>
+                
+                <!-- Order Items Preview -->
+                <div class="mt-3">
+                    {% for item in order.orderitem_set.all|slice:":3" %}
+                        <span class="badge bg-light text-dark me-2 mb-1">
+                            {{ item.product.name }} (x{{ item.quantity }})
+                        </span>
+                    {% endfor %}
+                    {% if order.orderitem_set.count > 3 %}
+                        <span class="badge bg-secondary">+{{ order.orderitem_set.count|add:"-3" }} more</span>
+                    {% endif %}
+                </div>
+
+                <!-- Shipping Address -->
+                <div class="mt-2">
+                    <small class="text-muted">
+                        <i class="fas fa-map-marker-alt me-1"></i>
+                        {{ order.address.city }}, {{ order.address.state }}
+                    </small>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-shopping-bag"></i>
+            <h4 class="text-muted">No orders yet</h4>
+            <p class="text-muted">Start shopping to see your orders here!</p>
+            <a href="{% url 'all_products' %}" class="btn btn-success btn-lg">Start Shopping</a>
+        </div>
+    {% endif %}
+</section>

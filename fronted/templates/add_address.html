@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Add New Address - FernsHub{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-success text-white py-3">
+                    <h4 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Add New Address</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{% url 'add_address' %}?from_checkout=true">
+                        {% csrf_token %}
+                        
+                        <!-- Hidden field to track where we came from -->
+                        <input type="hidden" name="next" value="{{ request.GET.next }}">
+                        
+                        <!-- Messages -->
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <div class="row g-3">
+                            <!-- Full Name -->
+                            <div class="col-md-6">
+                                <label for="full_name" class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="full_name" name="full_name" 
+                                       value="{{ form.full_name.value|default:'' }}" required 
+                                       placeholder="Enter your full name">
+                                {% if form.full_name.errors %}
+                                    <div class="text-danger small">{{ form.full_name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" 
+                                       value="{{ form.phone.value|default:'' }}" required 
+                                       placeholder="Enter your phone number">
+                                {% if form.phone.errors %}
+                                    <div class="text-danger small">{{ form.phone.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Address Line -->
+                            <div class="col-12">
+                                <label for="address_line" class="form-label">Address Line *</label>
+                                <textarea class="form-control" id="address_line" name="address_line" rows="3" required 
+                                          placeholder="Enter your complete address (House No., Building, Street, Area)">{{ form.address_line.value|default:'' }}</textarea>
+                                {% if form.address_line.errors %}
+                                    <div class="text-danger small">{{ form.address_line.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- City -->
+                            <div class="col-md-4">
+                                <label for="city" class="form-label">City *</label>
+                                <input type="text" class="form-control" id="city" name="city" 
+                                       value="{{ form.city.value|default:'' }}" required 
+                                       placeholder="Enter your city">
+                                {% if form.city.errors %}
+                                    <div class="text-danger small">{{ form.city.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- State -->
+                            <div class="col-md-4">
+                                <label for="state" class="form-label">State *</label>
+                                <input type="text" class="form-control" id="state" name="state" 
+                                       value="{{ form.state.value|default:'' }}" required 
+                                       placeholder="Enter your state">
+                                {% if form.state.errors %}
+                                    <div class="text-danger small">{{ form.state.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Postal Code -->
+                            <div class="col-md-4">
+                                <label for="postal_code" class="form-label">Postal Code *</label>
+                                <input type="text" class="form-control" id="postal_code" name="postal_code" 
+                                       value="{{ form.postal_code.value|default:'' }}" required 
+                                       placeholder="Enter postal code">
+                                {% if form.postal_code.errors %}
+                                    <div class="text-danger small">{{ form.postal_code.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Country -->
+                            <div class="col-12">
+                                <label for="country" class="form-label">Country *</label>
+                                <input type="text" class="form-control" id="country" name="country" 
+                                       value="{{ form.country.value|default:'India' }}" required 
+                                       placeholder="Enter your country">
+                                {% if form.country.errors %}
+                                    <div class="text-danger small">{{ form.country.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Address Type -->
+                            <div class="col-md-6">
+                                <label for="address_type" class="form-label">Address Type</label>
+                                <select class="form-select" id="address_type" name="address_type">
+                                    <option value="home" {% if form.address_type.value == 'home' %}selected{% endif %}>Home</option>
+                                    <option value="work" {% if form.address_type.value == 'work' %}selected{% endif %}>Work</option>
+                                    <option value="other" {% if form.address_type.value == 'other' %}selected{% endif %}>Other</option>
+                                </select>
+                            </div>
+
+                            <!-- Set as Default Address -->
+                            <div class="col-md-6">
+                                <div class="form-check mt-4">
+                                    <input class="form-check-input" type="checkbox" id="is_default" name="is_default" 
+                                           {% if form.is_default.value %}checked{% endif %}>
+                                    <label class="form-check-label" for="is_default">
+                                        Set as default address
+                                    </label>
+                                </div>
+                                <small class="text-muted">This address will be used as your primary shipping address.</small>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            {% if request.GET.from_checkout %}
+                                <a href="{% url 'checkout' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Checkout
+                                </a>
+                            {% else %}
+                                <a href="{% url 'manage_addresses' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Addresses
+                                </a>
+                            {% endif %}
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save me-2"></i>Save Address
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Address Tips -->
+            <div class="card border-0 bg-light mt-4">
+                <div class="card-body">
+                    <h6><i class="fas fa-lightbulb me-2 text-warning"></i>Address Tips</h6>
+                    <ul class="mb-0 small">
+                        <li>Ensure your phone number is correct for delivery updates</li>
+                        <li>Include landmarks for easier location identification</li>
+                        <li>Double-check your postal code for accurate delivery</li>
+                        <li>Set a default address for faster checkout</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-format phone number
+        const phoneInput = document.getElementById('phone');
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 10) {
+                value = value.substring(0, 10);
+            }
+            e.target.value = value;
+        });
+
+        // Auto-capitalize city and state
+        const cityInput = document.getElementById('city');
+        const stateInput = document.getElementById('state');
+        
+        [cityInput, stateInput].forEach(input => {
+            input.addEventListener('blur', function(e) {
+                e.target.value = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+            });
+        });
+
+        // Postal code validation
+        const postalCodeInput = document.getElementById('postal_code');
+        postalCodeInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 6) {
+                value = value.substring(0, 6);
+            }
+            e.target.value = value;
+        });
+
+        // Form submission handling
+        const addressForm = document.querySelector('form');
+        addressForm.addEventListener('submit', function(e) {
+            // Basic validation
+            const phone = document.getElementById('phone').value;
+            const postalCode = document.getElementById('postal_code').value;
+            
+            if (phone.length !== 10) {
+                e.preventDefault();
+                alert('Please enter a valid 10-digit phone number.');
+                return;
+            }
+            
+            if (postalCode.length !== 6) {
+                e.preventDefault();
+                alert('Please enter a valid 6-digit postal code.');
+                return;
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,333 @@
+/* Global Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f8f5;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+.navbar {
+  background-color: #ffffff;
+}
+
+.navbar .nav-link {
+  color: #333 !important;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.navbar .nav-link:hover {
+  color: #28a745 !important; /* Theme green color on hover */
+}
+
+.btn-login {
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 50px;
+  padding: 6px 20px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.btn-login:hover {
+  background-color: #218838;
+  color: #fff;
+}
+
+.search-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  border-radius: 50px 0 0 50px;
+  height: 38px; /* Fixed height for consistency */
+}
+
+.search-addon {
+  border-radius: 0 50px 50px 0;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 0 15px;
+  height: 38px; /* Match input height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.search-addon:hover {
+  background-color: #218838;
+}
+
+.search-addon i {
+  font-size: 1rem;
+}
+
+.badge-cart {
+  font-size: 0.7rem;
+  background-color: #dc3545;
+}
+
+/* Category Highlights Section */
+.category-scroll {
+  display: flex;
+  overflow-x: auto;
+  padding: 1rem 0;
+  gap: 1.5rem;
+  scroll-behavior: smooth;
+}
+
+.category-item {
+  flex: 0 0 auto;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.category-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  padding: 5px;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.category-item img:hover {
+  transform: scale(1.1);
+  border-color: #28a745;
+}
+
+.category-item p {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Hide scrollbar */
+.category-scroll::-webkit-scrollbar {
+  display: none;
+}
+.category-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Banner Carousel */
+.carousel-inner img {
+  border-radius: 10px;
+  height: 400px;
+  object-fit: cover;
+}
+
+.category-section {
+  padding: 40px 0;
+  text-align: center;
+}
+
+.category-card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.category-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.category-title {
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+}
+
+
+ /* Product Grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    /* Product Card */
+    .product-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Product Image */
+    .product-image img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    /* Product Info */
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-info h3 {
+      margin: 10px 0;
+      font-size: 1.2rem;
+      color: #222;
+    }
+
+    .product-info p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .product-price {
+      color: #28a745;
+      font-weight: bold;
+      margin: 10px 0;
+      font-size: 1rem;
+    }
+
+    /* Button */
+    .btn {
+      display: inline-block;
+      padding: 10px 18px;
+      margin-top: 10px;
+      background: #28a745;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #218838;
+    }
+
+
+
+
+.see-more-container {
+  display: flex;
+  justify-content: center;   /* centers horizontally */
+  align-items: center;       /* optional: centers vertically */
+  width: 100%;               /* make container take full width */
+  margin-top: 20px;
+}
+
+.btnsee {
+  display: inline-block;
+  padding: 10px 18px;
+  background: #28a745;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.btnsee:hover {
+  background: #218838;
+}
+
+/* Services Section */
+.service-card {
+  background: #fff;
+  text-align: center;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+.service-card i {
+  color: #28a745;
+  margin-bottom: 15px;
+}
+
+/* Contact Section */
+#contact h2 {
+  color: #28a745;
+  margin-bottom: 30px;
+}
+#contact ul li {
+  margin-bottom: 10px;
+}
+#contact input, #contact textarea {
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 100%;
+  resize: none;
+  transition: border 0.3s;
+}
+#contact input:focus, #contact textarea:focus {
+  border-color: #28a745;
+  outline: none;
+}
+
+/* Footer */
+footer {
+  background-color: #111;
+  color: #fff;
+  padding: 40px 0;
+}
+footer a {
+  color: #28a745;
+  text-decoration: none;
+  transition: 0.3s;
+}
+footer a:hover {
+  text-decoration: underline;
+  color: #1db954;
+}
+footer h5 {
+  margin-bottom: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .category-scroll {
+    gap: 1rem;
+  }
+  .category-item img {
+    width: 60px;
+    height: 60px;
+  }
+  .service-card {
+    padding: 20px;
+  }
+  .carousel-inner img {
+    height: 250px;
+  }
+  .search-group {
+    width: 70% !important; /* Adjust width for smaller screens */
+  }
+  .search-addon {
+    padding: 0 10px; /* Slightly reduce padding for smaller screens */
+  }
+}

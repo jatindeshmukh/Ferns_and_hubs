@@ -1,0 +1,13 @@
+/* Add this small improvement at the end */
+.table-scroll {
+    overflow-x: auto;
+}
+
+.items-section::-webkit-scrollbar {
+    height: 6px;
+}
+
+.items-section::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}

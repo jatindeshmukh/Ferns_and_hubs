@@ -1,0 +1,322 @@
+<!-- templates/all_products.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}All Products - FernsHub{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Page Header Styling */
+    .page-header {
+        background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+        color: white;
+        padding: 4rem 0;
+        margin-bottom: 2rem;
+    }
+    
+    /* Filter Section */
+    .filter-section {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    /* Product Cards */
+    .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .card-img-top {
+        height: 220px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .card:hover .card-img-top {
+        transform: scale(1.05);
+    }
+    
+    .stock-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        font-size: 0.75rem;
+    }
+    
+    .product-price {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #2e7d32;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+    
+    .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Category Cards */
+    .categories-section .card {
+        transition: all 0.3s ease;
+    }
+    
+    .categories-section .card:hover {
+        background-color: #f1f8e9;
+        border-color: #c5e1a5;
+    }
+    
+    /* Sort and Filter Controls */
+    .sort-filter-controls {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .page-header .display-4 {
+            font-size: 2rem;
+        }
+        
+        .sort-filter-controls {
+            justify-content: flex-start;
+        }
+        
+        .sort-filter-controls .form-select {
+            width: 100% !important;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">All Products</h1>
+                <p class="lead mb-4">Discover our complete collection of beautiful plants and gardening essentials</p>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="{% url 'home' %}" class="btn btn-outline-light">
+                        <i class="fas fa-home me-2"></i>Back to Home
+                    </a>
+                    <a href="#categories" class="btn btn-light">
+                        <i class="fas fa-filter me-2"></i>Browse Categories
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <i class="fas fa-seedling display-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container mb-5">
+    <!-- Filter and Sort Section -->
+    <div class="filter-section">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h5 class="mb-0" id="productCount">{{ products|length }} products available</h5>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <div class="sort-filter-controls">
+                    <select class="form-select" id="sortSelect" style="width: auto;">
+                        <option value="featured">Sort by: Featured</option>
+                        <option value="price_low">Price: Low to High</option>
+                        <option value="price_high">Price: High to Low</option>
+                        <option value="name_asc">Name: A to Z</option>
+                        <option value="name_desc">Name: Z to A</option>
+                    </select>
+                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="fas fa-filter me-2"></i>Filter
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="row" id="productsGrid">
+        {% for product in products %}
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-4 product-card" 
+             data-price="{{ product.price }}" 
+             data-name="{{ product.name }}"
+             data-category="{{ product.category.slug }}">
+            <div class="card h-100 position-relative">
+                <!-- Stock Badge -->
+                {% if product.available_stock and product.available_stock > 0 %}
+                <span class="badge bg-success stock-badge">In Stock</span>
+                {% else %}
+                <span class="badge bg-danger stock-badge">Out of Stock</span>
+                {% endif %}
+                
+                <!-- Product Image -->
+                <a href="{% url 'product_detail' product.id %}">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
+                        <i class="fas fa-leaf fa-3x text-muted"></i>
+                    </div>
+                    {% endif %}
+                </a>
+                
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text flex-grow-1 text-muted">
+                        {{ product.description|default:"Beautiful plant perfect for your space."|truncatechars:120 }}
+                    </p>
+                    
+                    <div class="mt-auto">
+                        <p class="product-price mb-2">₹{{ product.price }}</p>
+                        
+                        {% if product.available_stock and product.available_stock > 0 %}
+                        <form method="POST" action="{% url 'add_to_cart' product.id %}" class="add-to-cart-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-success w-100 add-to-cart-btn">
+                                <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                            </button>
+                        </form>
+                        {% else %}
+                        <button class="btn btn-secondary w-100" disabled>
+                            <i class="fas fa-times-circle me-2"></i>Out of Stock
+                        </button>
+                        {% endif %}
+                        
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-success w-100 mt-2">
+                            <i class="fas fa-eye me-2"></i>View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="empty-state">
+                <i class="fas fa-seedling text-muted"></i>
+                <h3>No Products Available</h3>
+                <p class="text-muted">We're currently updating our inventory. Please check back later.</p>
+                <a href="{% url 'home' %}" class="btn btn-success">Return to Home</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Categories Section -->
+    <div id="categories" class="row mt-5 categories-section">
+        <div class="col-12">
+            <h3 class="text-center mb-4">Browse by Category</h3>
+            <div class="row g-3">
+                <!-- All 12 categories with proper URLs -->
+                <div class="col-md-3 col-6">
+                    <a href="{% url 'indoor_plants' %}" class="card text-decoration-none text-dark h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-home fa-2x text-success mb-3"></i>
+                            <h6>Indoor Plants</h6>
+                            <small class="text-muted">Perfect for your home</small>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 col-6">
+                    <a href="{% url 'outdoor_plants' %}" class="card text-decoration-none text-dark h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-tree fa-2x text-success mb-3"></i>
+                            <h6>Outdoor Plants</h6>
+                            <small class="text-muted">For your garden</small>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 col-6">
+                    <a href="{% url 'flowering_plants' %}" class="card text-decoration-none text-dark h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-spa fa-2x text-success mb-3"></i>
+                            <h6>Flowering Plants</h6>
+                            <small class="text-muted">Colorful blooms</small>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 col-6">
+                    <a href="{% url 'medicinal_plants' %}" class="card text-decoration-none text-dark h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-leaf fa-2x text-success mb-3"></i>
+                            <h6>Medicinal Plants</h6>
+                            <small class="text-muted">Health benefits</small>
+                        </div>
+                    </a>
+                </div>
+                <!-- Add remaining 8 categories similarly -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filterModalLabel">Filter Products</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" id="categoryFilter">
+                        <option value="all">All Categories</option>
+                        <option value="indoor">Indoor Plants</option>
+                        <option value="outdoor">Outdoor Plants</option>
+                        <option value="flowering">Flowering Plants</option>
+                        <option value="medicinal">Medicinal Plants</option>
+                        <!-- Add other categories -->
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Price Range</label>
+                    <div class="d-flex align-items-center">
+                        <input type="number" class="form-control me-2" id="minPrice" placeholder="Min" min="0">
+                        <span class="mx-2">to</span>
+                        <input type="number" class="form-control ms-2" id="maxPrice" placeholder="Max" min="0">
+                    </div>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="inStockOnly">
+                    <label class="form-check-label" for="inStockOnly">
+                        Show only in-stock items
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="applyFilters">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/all_products.js' %}"></script>
+{% endblock %}

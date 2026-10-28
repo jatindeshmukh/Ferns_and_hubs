@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search Results - Ferns 'N Herbs{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Search Results for "{{ search_query }}"</h2>
+    <p class="text-muted">Found {{ results_count }} results</p>
+
+    {% if products or ferns_palms_products %}
+        <!-- Regular Products -->
+        {% if products %}
+        <div class="row mt-4">
+            <h4>Plants</h4>
+            {% for product in products %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <img src="{% static 'images/placeholder.jpg' %}" class="card-img-top" alt="No image" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description|truncatewords:15 }}</p>
+                        <p class="fw-bold text-success">₹{{ product.price }}</p>
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-success">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Ferns & Palms Products -->
+        {% if ferns_palms_products %}
+        <div class="row mt-4">
+            <h4>Ferns & Palms</h4>
+            {% for product in ferns_palms_products %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <img src="{% static 'images/placeholder.jpg' %}" class="card-img-top" alt="No image" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        {% if product.scientific_name %}
+                        <p class="text-muted small">{{ product.scientific_name }}</p>
+                        {% endif %}
+                        <p class="card-text">{{ product.description|truncatewords:15 }}</p>
+                        <p class="fw-bold text-success">₹{{ product.price }}</p>
+                        <a href="{% url 'ferns_palms_product_detail' product.id %}" class="btn btn-outline-success">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    {% else %}
+        <div class="text-center mt-5">
+            <h4 class="text-muted">No products found</h4>
+            <p>Try different search terms or browse our categories.</p>
+            <a href="{% url 'all_products' %}" class="btn btn-success">Browse All Products</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

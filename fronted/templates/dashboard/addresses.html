@@ -1,0 +1,73 @@
+<!-- Addresses Section -->
+<section id="addresses" class="tab-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title mb-0">Manage Addresses</h2>
+        <a href="{% url 'add_address' %}" class="btn btn-success">
+            <i class="fas fa-plus me-2"></i>Add New Address
+        </a>
+    </div>
+
+    {% if addresses %}
+        <div class="row">
+            {% for address in addresses %}
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <div class="address-card {% if address.is_default %}default{% endif %}">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="mb-0 text-dark">{{ address.full_name }}</h5>
+                            {% if address.is_default %}
+                                <span class="badge bg-success">Default Address</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="address-details">
+                            <p class="mb-2">
+                                <i class="fas fa-home me-2 text-muted"></i>
+                                <strong>{{ address.address_line }}</strong>
+                            </p>
+                            <p class="mb-1">
+                                <i class="fas fa-city me-2 text-muted"></i>
+                                {{ address.city }}, {{ address.state }} - {{ address.postal_code }}
+                            </p>
+                            <p class="mb-1">
+                                <i class="fas fa-flag me-2 text-muted"></i>
+                                {{ address.country }}
+                            </p>
+                            <p class="mb-0">
+                                <i class="fas fa-phone me-2 text-muted"></i>
+                                {{ address.phone }}
+                            </p>
+                        </div>
+
+                        <div class="address-actions">
+                            <div class="d-flex gap-2 flex-wrap">
+                                {% if not address.is_default %}
+                                    <form method="POST" action="{% url 'set_default_address' address.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-success btn-sm">
+                                            <i class="fas fa-check-circle me-1"></i>Set as Default
+                                        </button>
+                                    </form>
+                                {% endif %}
+                                <a href="{% url 'edit_address' address.id %}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-edit me-1"></i>Edit
+                                </a>
+                                <a href="{% url 'delete_address' address.id %}" class="btn btn-outline-danger btn-sm delete-address-btn">
+                                    <i class="fas fa-trash me-1"></i>Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-map-marker-alt"></i>
+            <h4 class="text-muted">No addresses saved</h4>
+            <p class="text-muted">Add your first address to get started with shopping!</p>
+            <a href="{% url 'add_address' %}" class="btn btn-success btn-lg">
+                <i class="fas fa-plus me-2"></i>Add Your First Address
+            </a>
+        </div>
+    {% endif %}
+</section>

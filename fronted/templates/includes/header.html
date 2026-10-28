@@ -1,0 +1,55 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light shadow-sm py-3 sticky-top bg-white" style="z-index: 1030;">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+      <img src="{% static 'images/Fernshub Logo.png' %}" alt="Ferns Hub Logo" width="80">
+    </a>
+
+    <!-- Mobile Toggle Button -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar Content -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <!-- Search -->
+      <form class="input-group mx-lg-auto my-2 my-lg-0 w-100 search-group" id="searchForm" method="GET" action="{% url 'product_search' %}">
+        <input type="search" name="q" class="form-control search-input" placeholder="Search for Products, Brands and More" value="{{ request.GET.q }}">
+        <button type="submit" class="input-group-text search-addon">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+
+      <!-- Right Side -->
+      <ul class="navbar-nav ms-lg-auto mb-2 mb-lg-0 d-flex align-items-center">
+        
+        <!-- Notifications -->
+        {% if user.is_authenticated %}
+        {% include 'includes/notifications_dropdown.html' %}
+        {% endif %}
+        
+        <!-- User Menu -->
+        {% if user.is_authenticated %}
+        {% include 'includes/user_dropdown.html' %}
+        {% else %}
+        <li class="nav-item me-3">
+          <a class="btn btn-success px-4" href="{% url 'login' %}">
+            <i class="fas fa-user me-2"></i>Login
+          </a>
+        </li>
+        {% endif %}
+
+        <!-- Cart -->
+        <li class="nav-item">
+          <a class="nav-link position-relative" href="{% url 'view_cart' %}">
+            <i class="fas fa-shopping-cart"></i> <span class="d-none d-md-inline">Cart</span>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-cart" id="cart-count">
+              {{ cart_items_count }}
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

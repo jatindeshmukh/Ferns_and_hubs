@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us - FernsHub{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+
+                    <h2 class="text-center mb-3 fw-bold text-success">Contact Us</h2>
+                    <p class="text-center text-muted mb-4">
+                        Have a question or need help? Fill out the form below and we’ll get back to you soon.
+                    </p>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" class="mt-3">
+                        {% csrf_token %}
+
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Please fix the following errors:</strong>
+                            <ul class="mb-0">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <!-- Name -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Your Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="Enter your name"
+                                   value="{{ form.name.value|default:'' }}" required>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email Address</label>
+                            <input type="email" name="email" class="form-control" placeholder="Enter your email"
+                                   value="{{ form.email.value|default:'' }}" required>
+                        </div>
+
+                        <!-- Subject -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Subject</label>
+                            <input type="text" name="subject" class="form-control" placeholder="Enter subject"
+                                   value="{{ form.subject.value|default:'' }}" required>
+                        </div>
+
+                        <!-- Message -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Message</label>
+                            <textarea name="message" class="form-control" placeholder="Write your message" rows="4" required>{{ form.message.value|default:'' }}</textarea>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-success px-5 py-2 fw-semibold shadow-sm">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <p class="text-muted mb-1">📍 Nagpur, India</p>
+                <p class="text-muted mb-0">📞 +91 7666804589 | ✉️ support@fernshub.com</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

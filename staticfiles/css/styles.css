@@ -1,0 +1,79 @@
+/* Global Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f8f5;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+.navbar {
+  background-color: #ffffff;
+}
+
+.navbar .nav-link {
+  color: #333 !important;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.navbar .nav-link:hover {
+  color: #28a745 !important; /* Theme green color on hover */
+}
+
+.btn-login {
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 50px;
+  padding: 6px 20px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.btn-login:hover {
+  background-color: #218838;
+  color: #fff;
+}
+
+.search-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  border-radius: 50px 0 0 50px;
+  height: 38px; /* Fixed height for consistency */
+}
+
+.search-addon {
+  border-radius: 0 50px 50px 0;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 0 15px;
+  height: 38px; /* Match input height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.search-addon:hover {
+  background-color: #218838;
+}
+
+.search-addon i {
+  font-size: 1rem;
+}
+
+.badge-cart {
+  font-size: 0.7rem;
+  background-color: #dc3545;
+}
+
+
+
+
+

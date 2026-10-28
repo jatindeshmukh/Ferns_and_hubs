@@ -1,0 +1,1240 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ user.username|title }} - Dashboard | Fernshub{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #198754;
+        --secondary-color: #6c757d;
+        --light-bg: #f8f9fa;
+        --border-color: #dee2e6;
+    }
+
+    .dashboard-container {
+        background: var(--light-bg);
+        min-height: 100vh;
+        padding: 20px 0;
+    }
+
+    .stock-status.in-stock { color: green; font-weight: 600; }
+    .stock-status.low-stock { color: orange; font-weight: 600; }
+    .stock-status.out-of-stock { color: red; font-weight: 600; }
+
+    .order-item {
+        border: 1px solid var(--border-color);
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        background: white;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .order-item:hover {
+        background: #f0f8f0;
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(25, 135, 84, 0.15);
+    }
+
+    .summary-boxes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .summary-box {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        flex: 1;
+        min-width: 150px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+    }
+
+    .summary-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .summary-box h3 {
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: var(--secondary-color);
+        font-weight: 600;
+    }
+
+    .summary-box p {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin: 0;
+    }
+
+    .address-card {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        height: 100%;
+    }
+
+    .address-card:hover {
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+    }
+
+    .address-card.default {
+        border-color: var(--primary-color);
+        background: linear-gradient(135deg, #f8fff8 0%, #f0f8f0 100%);
+        border-width: 2px;
+    }
+
+    .badge-default {
+        background: var(--primary-color);
+    }
+
+    .order-detail-modal .product-image {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-confirmed { background: #e3f2fd; color: #1976d2; }
+    .status-processing { background: #fff3e0; color: #f57c00; }
+    .status-shipped { background: #e8f5e8; color: #388e3c; }
+    .status-delivered { background: #e8f5e8; color: #2e7d32; }
+    .status-cancelled { background: #ffebee; color: #d32f2f; }
+
+    .loyalty-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .points {
+        font-size: 48px;
+        font-weight: bold;
+        margin: 20px 0;
+    }
+
+    .address-actions {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        opacity: 0.5;
+        color: var(--secondary-color);
+    }
+
+    .section-title {
+        color: #2c3e50;
+        font-weight: 700;
+        font-size: 1.5rem;
+        border-bottom: 3px solid var(--primary-color);
+        padding-bottom: 10px;
+        margin-bottom: 25px;
+    }
+
+    /* Dashboard Layout */
+    .dashboard {
+        display: flex;
+        min-height: calc(100vh - 140px);
+    }
+
+    .sidebar {
+        width: 280px;
+        background: white;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+
+    .main-content {
+        flex: 1;
+        padding: 30px;
+        background: var(--light-bg);
+        overflow-y: auto;
+    }
+
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-menu li {
+        margin: 0;
+    }
+
+    .sidebar-menu a {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        color: #555;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+
+    .sidebar-menu a:hover {
+        background: #f8f9fa;
+        color: var(--primary-color);
+        border-left-color: var(--primary-color);
+    }
+
+    .sidebar-menu a.active {
+        background: #e8f5e8;
+        color: var(--primary-color);
+        border-left-color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    .sidebar-menu a.logout {
+        color: #dc3545;
+    }
+
+    .sidebar-menu a.logout:hover {
+        background: #ffe6e6;
+        color: #dc3545;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-right: 10px;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+    }
+
+    .btn-success {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .btn-success:hover {
+        background: #157347;
+        border-color: #146c43;
+    }
+
+    /* Dashboard Overview Cards */
+    .dashboard-overview {
+        margin-bottom: 30px;
+    }
+
+    .overview-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+        height: 100%;
+    }
+
+    .overview-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .overview-card i {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        color: var(--primary-color);
+    }
+
+    .overview-card h3 {
+        font-size: 1.1rem;
+        color: var(--secondary-color);
+        margin-bottom: 10px;
+    }
+
+    .overview-card .number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+    }
+
+    .overview-card .description {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+        margin-bottom: 30px;
+    }
+
+    .action-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+        height: 100%;
+    }
+
+    .action-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .action-card:hover i,
+    .action-card:hover h5,
+    .action-card:hover p {
+        color: white;
+    }
+
+    .action-card i {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: var(--primary-color);
+    }
+
+    .action-card h5 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+
+    .action-card p {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin: 0;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .summary-box {
+            min-width: calc(50% - 10px);
+            padding: 15px 10px;
+        }
+
+        .summary-box p {
+            font-size: 20px;
+        }
+
+        .address-card {
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+        }
+
+        .loyalty-card {
+            padding: 20px 15px;
+        }
+
+        .points {
+            font-size: 36px;
+        }
+
+        .order-item {
+            padding: 12px;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: -280px;
+            top: 0;
+            height: 100vh;
+            z-index: 1000;
+            transition: left 0.3s ease;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .main-content {
+            margin-left: 0 !important;
+            padding: 20px 15px;
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: block !important;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 18px;
+        }
+
+        .dashboard {
+            flex-direction: column;
+        }
+
+        .overview-card {
+            padding: 20px 15px;
+            margin-bottom: 15px;
+        }
+
+        .overview-card .number {
+            font-size: 1.5rem;
+        }
+
+        .action-card {
+            margin-bottom: 15px;
+        }
+
+        .address-actions .btn {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .table-responsive {
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .summary-box {
+            min-width: 100%;
+        }
+
+        .address-actions .btn {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .table-responsive {
+            font-size: 14px;
+        }
+
+        .overview-card {
+            padding: 20px 15px;
+        }
+
+        .overview-card .number {
+            font-size: 1.5rem;
+        }
+
+        .main-content {
+            padding: 15px 10px;
+        }
+    }
+
+    /* Sidebar Mobile */
+    .mobile-menu-btn {
+        display: none;
+    }
+
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    /* Profile Info Display */
+    .profile-info-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+
+    .profile-info-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .profile-info-item:last-child {
+        border-bottom: none;
+    }
+
+    .profile-info-label {
+        font-weight: 600;
+        color: #555;
+    }
+
+    .profile-info-value {
+        color: #333;
+    }
+
+    /* Contact Info Section */
+    .contact-info {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 20px;
+    }
+
+    .contact-info h6 {
+        color: var(--primary-color);
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <div class="container-fluid">
+        <div class="dashboard">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header p-3 border-bottom">
+                    <div class="d-flex align-items-center">
+                        <div class="user-avatar">
+                            {{ user.username|slice:":2"|upper }}
+                        </div>
+                        <div>
+                            <h6 class="mb-0">{{ user.username|title }}</h6>
+                            <small class="text-muted">{{ user.email }}</small>
+                            {% if user.contact %}
+                                <small class="text-muted d-block">{{ user.contact }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active" data-tab="overview"><i class="fas fa-tachometer-alt me-2"></i>Dashboard Overview</a></li>
+                    <li><a href="#" data-tab="profile"><i class="fas fa-user me-2"></i>My Profile</a></li>
+                    <li><a href="#" data-tab="orders"><i class="fas fa-shopping-bag me-2"></i>My Orders</a></li>
+                    <li><a href="#" data-tab="addresses"><i class="fas fa-map-marker-alt me-2"></i>Manage Addresses</a></li>
+                    <li><a href="#" data-tab="stock"><i class="fas fa-cubes me-2"></i>My Stock</a></li>
+                    <li><a href="#" data-tab="loyalty"><i class="fas fa-star me-2"></i>Loyalty Points</a></li>
+                    <li><a href="#" data-tab="password"><i class="fas fa-lock me-2"></i>Change Password</a></li>
+                    <li><a href="{% url 'logout' %}" class="logout"><i class="fas fa-sign-out-alt me-2"></i>Log out</a></li>
+                </ul>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard Overview -->
+                <section id="overview" class="tab-content active">
+                    <h2 class="section-title">Dashboard Overview</h2>
+                    
+                    <!-- Overview Cards -->
+                    <div class="dashboard-overview">
+                        <div class="row g-4">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="overview-card">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    <div class="number">{{ total_orders }}</div>
+                                    <h3>Total Orders</h3>
+                                    <p class="description">Your all-time orders</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="overview-card">
+                                    <i class="fas fa-truck"></i>
+                                    <div class="number">{{ pending_count }}</div>
+                                    <h3>Pending Orders</h3>
+                                    <p class="description">Orders being processed</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="overview-card">
+                                    <i class="fas fa-check-circle"></i>
+                                    <div class="number">{{ delivered_count }}</div>
+                                    <h3>Delivered</h3>
+                                    <p class="description">Successfully delivered</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="overview-card">
+                                    <i class="fas fa-wallet"></i>
+                                    <div class="number">₹{{ total_spent }}</div>
+                                    <h3>Total Spent</h3>
+                                    <p class="description">Your total expenditure</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <h3 class="mb-4">Quick Actions</h3>
+                        <div class="row g-4">
+                            <div class="col-lg-3 col-md-6">
+                                <a href="{% url 'all_products' %}" class="text-decoration-none">
+                                    <div class="action-card">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <h5>Shop Now</h5>
+                                        <p>Browse our products</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <a href="#" data-tab="addresses" class="text-decoration-none tab-link">
+                                    <div class="action-card">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <h5>Manage Addresses</h5>
+                                        <p>Update your addresses</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <a href="#" data-tab="orders" class="text-decoration-none tab-link">
+                                    <div class="action-card">
+                                        <i class="fas fa-box-open"></i>
+                                        <h5>View Orders</h5>
+                                        <p>Check your orders</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <a href="#" data-tab="profile" class="text-decoration-none tab-link">
+                                    <div class="action-card">
+                                        <i class="fas fa-user-edit"></i>
+                                        <h5>Edit Profile</h5>
+                                        <p>Update your information</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Addresses Preview -->
+                    <div class="recent-addresses">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="mb-0">Your Addresses</h3>
+                            <a href="#" data-tab="addresses" class="btn btn-success tab-link">
+                                <i class="fas fa-plus me-2"></i>Manage All Addresses
+                            </a>
+                        </div>
+                        
+                        {% if addresses %}
+                            <div class="row">
+                                {% for address in addresses|slice:":2" %}
+                                <div class="col-lg-6 col-md-12 mb-4">
+                                    <div class="address-card {% if address.is_default %}default{% endif %}">
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                            <h5 class="mb-0 text-dark">{{ address.full_name }}</h5>
+                                            {% if address.is_default %}
+                                                <span class="badge bg-success">Default Address</span>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="address-details">
+                                            <p class="mb-2">
+                                                <i class="fas fa-home me-2 text-muted"></i>
+                                                <strong>{{ address.address_line }}</strong>
+                                            </p>
+                                            <p class="mb-1">
+                                                <i class="fas fa-city me-2 text-muted"></i>
+                                                {{ address.city }}, {{ address.state }} - {{ address.postal_code }}
+                                            </p>
+                                            <p class="mb-1">
+                                                <i class="fas fa-flag me-2 text-muted"></i>
+                                                {{ address.country }}
+                                            </p>
+                                            <p class="mb-0">
+                                                <i class="fas fa-phone me-2 text-muted"></i>
+                                                {{ address.phone }}
+                                            </p>
+                                        </div>
+
+                                        <div class="address-actions">
+                                            <div class="d-flex gap-2 flex-wrap">
+                                                {% if not address.is_default %}
+                                                    <form method="POST" action="{% url 'set_default_address' address.id %}" class="d-inline">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-outline-success btn-sm">
+                                                            <i class="fas fa-check-circle me-1"></i>Set as Default
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                                <a href="{% url 'edit_address' address.id %}" class="btn btn-outline-primary btn-sm">
+                                                    <i class="fas fa-edit me-1"></i>Edit
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            
+                            {% if addresses.count > 2 %}
+                                <div class="text-center mt-3">
+                                    <a href="#" data-tab="addresses" class="btn btn-outline-primary tab-link">
+                                        <i class="fas fa-eye me-2"></i>View All {{ addresses.count }} Addresses
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <h4 class="text-muted">No addresses saved</h4>
+                                <p class="text-muted">Add your first address to get started with shopping!</p>
+                                <a href="{% url 'add_address' %}" class="btn btn-success btn-lg">
+                                    <i class="fas fa-plus me-2"></i>Add Your First Address
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Recent Orders Preview -->
+                    <div class="recent-orders mt-5">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="mb-0">Recent Orders</h3>
+                            <a href="#" data-tab="orders" class="btn btn-success tab-link">
+                                <i class="fas fa-list me-2"></i>View All Orders
+                            </a>
+                        </div>
+
+                        {% if orders|slice:":3" %}
+                            {% for order in orders|slice:":3" %}
+                                <div class="order-item" onclick="showOrderDetails({{ order.id }})">
+                                    <div class="d-flex justify-content-between align-items-start flex-wrap">
+                                        <div class="mb-2">
+                                            <strong>Order #{{ order.id }}</strong> 
+                                            <span class="status-badge status-{{ order.status|lower }} ms-2">{{ order.get_status_display }}</span>
+                                            <br>
+                                            <small class="text-muted">Placed on: {{ order.created_at|date:"M d, Y H:i" }}</small>
+                                        </div>
+                                        <div class="text-end mb-2">
+                                            <strong>₹{{ order.total_price }}</strong><br>
+                                            <small class="text-muted">{{ order.orderitem_set.count }} item(s)</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Order Items Preview -->
+                                    <div class="mt-3">
+                                        {% for item in order.orderitem_set.all|slice:":3" %}
+                                            <span class="badge bg-light text-dark me-2 mb-1">
+                                                {{ item.product.name }} (x{{ item.quantity }})
+                                            </span>
+                                        {% endfor %}
+                                        {% if order.orderitem_set.count > 3 %}
+                                            <span class="badge bg-secondary">+{{ order.orderitem_set.count|add:"-3" }} more</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Shipping Address -->
+                                    <div class="mt-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-map-marker-alt me-1"></i>
+                                            {{ order.address.city }}, {{ order.address.state }}
+                                        </small>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            
+                            {% if orders.count > 3 %}
+                                <div class="text-center mt-3">
+                                    <a href="#" data-tab="orders" class="btn btn-outline-primary tab-link">
+                                        <i class="fas fa-list me-2"></i>View All {{ orders.count }} Orders
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="fas fa-shopping-bag"></i>
+                                <h4 class="text-muted">No orders yet</h4>
+                                <p class="text-muted">Start shopping to see your orders here!</p>
+                                <a href="{% url 'all_products' %}" class="btn btn-success btn-lg">Start Shopping</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </section>
+
+                <!-- Profile Section -->
+                <section id="profile" class="tab-content">
+                    <h2 class="section-title">My Profile</h2>
+                    
+                    <!-- Profile Information Display -->
+                    <div class="profile-info-card">
+                        <h4 class="mb-4">Profile Information</h4>
+                        <div class="profile-info-item">
+                            <span class="profile-info-label">Full Name:</span>
+                            <span class="profile-info-value">{{ user.username|title }}</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="profile-info-label">Email:</span>
+                            <span class="profile-info-value">{{ user.email }}</span>
+                        </div>
+                        {% if user.contact %}
+                        <div class="profile-info-item">
+                            <span class="profile-info-label">Contact Number:</span>
+                            <span class="profile-info-value">{{ user.contact }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="profile-info-item">
+                            <span class="profile-info-label">Member Since:</span>
+                            <span class="profile-info-value">{{ user.date_joined|date:"F d, Y" }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Edit Profile Form -->
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">Edit Profile Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{% url 'update_profile' %}" class="profile-form">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="username" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="contact" class="form-label">Contact Number</label>
+                                    <input type="tel" class="form-control" id="contact" name="contact" value="{{ user.contact|default:'' }}" placeholder="Enter your contact number">
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-success btn-lg">Update Profile</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Orders Section -->
+                <section id="orders" class="tab-content">
+                    <h2 class="section-title">My Orders</h2>
+
+                    <div class="summary-boxes">
+                        <div class="summary-box">
+                            <h3>Total Orders</h3>
+                            <p>{{ total_orders }}</p>
+                        </div>
+                        <div class="summary-box">
+                            <h3>Delivered</h3>
+                            <p>{{ delivered_count }}</p>
+                        </div>
+                        <div class="summary-box">
+                            <h3>Pending</h3>
+                            <p>{{ pending_count }}</p>
+                        </div>
+                        <div class="summary-box">
+                            <h3>Total Spent</h3>
+                            <p>₹{{ total_spent }}</p>
+                        </div>
+                    </div>
+
+                    {% if orders %}
+                        {% for order in orders %}
+                            <div class="order-item" onclick="showOrderDetails({{ order.id }})">
+                                <div class="d-flex justify-content-between align-items-start flex-wrap">
+                                    <div class="mb-2">
+                                        <strong>Order #{{ order.id }}</strong> 
+                                        <span class="status-badge status-{{ order.status|lower }} ms-2">{{ order.get_status_display }}</span>
+                                        <br>
+                                        <small class="text-muted">Placed on: {{ order.created_at|date:"M d, Y H:i" }}</small>
+                                    </div>
+                                    <div class="text-end mb-2">
+                                        <strong>₹{{ order.total_price }}</strong><br>
+                                        <small class="text-muted">{{ order.orderitem_set.count }} item(s)</small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Order Items Preview -->
+                                <div class="mt-3">
+                                    {% for item in order.orderitem_set.all|slice:":3" %}
+                                        <span class="badge bg-light text-dark me-2 mb-1">
+                                            {{ item.product.name }} (x{{ item.quantity }})
+                                        </span>
+                                    {% endfor %}
+                                    {% if order.orderitem_set.count > 3 %}
+                                        <span class="badge bg-secondary">+{{ order.orderitem_set.count|add:"-3" }} more</span>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Shipping Address -->
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-map-marker-alt me-1"></i>
+                                        {{ order.address.city }}, {{ order.address.state }}
+                                    </small>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-shopping-bag"></i>
+                            <h4 class="text-muted">No orders yet</h4>
+                            <p class="text-muted">Start shopping to see your orders here!</p>
+                            <a href="{% url 'all_products' %}" class="btn btn-success btn-lg">Start Shopping</a>
+                        </div>
+                    {% endif %}
+                </section>
+
+                <!-- Addresses Section -->
+                <section id="addresses" class="tab-content">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="section-title mb-0">Manage Addresses</h2>
+                        <a href="{% url 'add_address' %}" class="btn btn-success">
+                            <i class="fas fa-plus me-2"></i>Add New Address
+                        </a>
+                    </div>
+
+                    {% if addresses %}
+                        <div class="row">
+                            {% for address in addresses %}
+                                <div class="col-lg-6 col-md-12 mb-4">
+                                    <div class="address-card {% if address.is_default %}default{% endif %}">
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                            <h5 class="mb-0 text-dark">{{ address.full_name }}</h5>
+                                            {% if address.is_default %}
+                                                <span class="badge bg-success">Default Address</span>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="address-details">
+                                            <p class="mb-2">
+                                                <i class="fas fa-home me-2 text-muted"></i>
+                                                <strong>{{ address.address_line }}</strong>
+                                            </p>
+                                            <p class="mb-1">
+                                                <i class="fas fa-city me-2 text-muted"></i>
+                                                {{ address.city }}, {{ address.state }} - {{ address.postal_code }}
+                                            </p>
+                                            <p class="mb-1">
+                                                <i class="fas fa-flag me-2 text-muted"></i>
+                                                {{ address.country }}
+                                            </p>
+                                            <p class="mb-0">
+                                                <i class="fas fa-phone me-2 text-muted"></i>
+                                                {{ address.phone }}
+                                            </p>
+                                        </div>
+
+                                        <div class="address-actions">
+                                            <div class="d-flex gap-2 flex-wrap">
+                                                {% if not address.is_default %}
+                                                    <form method="POST" action="{% url 'set_default_address' address.id %}" class="d-inline">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-outline-success btn-sm">
+                                                            <i class="fas fa-check-circle me-1"></i>Set as Default
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                                <a href="{% url 'edit_address' address.id %}" class="btn btn-outline-primary btn-sm">
+                                                    <i class="fas fa-edit me-1"></i>Edit
+                                                </a>
+                                                <a href="{% url 'delete_address' address.id %}" class="btn btn-outline-danger btn-sm" 
+                                                   onclick="return confirm('Are you sure you want to delete this address?')">
+                                                    <i class="fas fa-trash me-1"></i>Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <h4 class="text-muted">No addresses saved</h4>
+                            <p class="text-muted">Add your first address to get started with shopping!</p>
+                            <a href="{% url 'add_address' %}" class="btn btn-success btn-lg">
+                                <i class="fas fa-plus me-2"></i>Add Your First Address
+                            </a>
+                        </div>
+                    {% endif %}
+                </section>
+
+                <!-- Stock Section -->
+                <section id="stock" class="tab-content">
+                    <h2 class="section-title">My Products / Stock</h2>
+                    {% if products %}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Category</th>
+                                                <th>Price</th>
+                                                <th>Sold</th>
+                                                <th>Stock Left</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for product in products %}
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        {% if product.image %}
+                                                            <img src="{{ product.image.url }}" alt="{{ product.name }}" 
+                                                                 class="rounded me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                                        {% else %}
+                                                            <div class="rounded bg-light me-2 d-flex align-items-center justify-content-center" 
+                                                                 style="width: 40px; height: 40px;">
+                                                                <i class="fas fa-image text-muted"></i>
+                                                            </div>
+                                                        {% endif %}
+                                                        <span class="fw-medium">{{ product.name }}</span>
+                                                    </div>
+                                                </td>
+                                                <td>{{ product.category.name }}</td>
+                                                <td class="fw-bold">₹{{ product.price }}</td>
+                                                <td>{{ product.sold_quantity|default:0 }}</td>
+                                                <td class="fw-bold">{{ product.stock_quantity }}</td>
+                                                <td>
+                                                    {% if product.stock_quantity <= 0 %}
+                                                        <span class="stock-status out-of-stock">Out of Stock</span>
+                                                    {% elif product.stock_quantity <= 5 %}
+                                                        <span class="stock-status low-stock">Low Stock</span>
+                                                    {% else %}
+                                                        <span class="stock-status in-stock">In Stock</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-cubes"></i>
+                            <h4 class="text-muted">No products to manage</h4>
+                            <p class="text-muted">You don't have any products listed yet.</p>
+                        </div>
+                    {% endif %}
+                </section>
+
+                <!-- Loyalty -->
+                <section id="loyalty" class="tab-content">
+                    <h2 class="section-title">Loyalty Points</h2>
+                    <div class="loyalty-card">
+                        <h3>Your Points Balance</h3>
+                        <div class="points">{{ user.points|default:0 }}</div>
+                        <p>Earn more points by shopping and referring friends!</p>
+                        <div class="mt-4">
+                            <button class="btn btn-light me-2 mb-2">Redeem Points</button>
+                            <button class="btn btn-outline-light mb-2">How to Earn</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Password -->
+                <section id="password" class="tab-content">
+                    <h2 class="section-title">Change Password</h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="POST" action="{% url 'change_password' %}">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="currentPassword" class="form-label">Current Password</label>
+                                            <input type="password" class="form-control" id="currentPassword" name="current_password" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="newPassword" class="form-label">New Password</label>
+                                            <input type="password" class="form-control" id="newPassword" name="new_password" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                            <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-success btn-lg">Update Password</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+</div>
+
+<!-- Order Details Modal -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="orderDetailsContent">
+                <!-- Order details will be loaded here via JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tabs = document.querySelectorAll(".sidebar-menu a[data-tab]");
+        const contents = document.querySelectorAll(".tab-content");
+        const tabLinks = document.querySelectorAll(".tab-link");
+
+        // Function to switch tabs
+        function switchTab(tabName) {
+            tabs.forEach(t => t.classList.remove("active"));
+            contents.forEach(c => c.classList.remove("active"));
+
+            const activeTab = document.querySelector(`[data-tab="${tabName}"]`);
+            const activeContent = document.getElementById(tabName);
+            
+            if (activeTab && activeContent) {
+                activeTab.classList.add("active");
+                activeContent.classList.add("active");
+            }
+
+            // Close sidebar on mobile after clicking a tab
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        }
+
+        // Sidebar tab click event
+        tabs.forEach(tab => {
+            tab.addEventListener("click", e => {
+                e.preventDefault();
+                switchTab(tab.dataset.tab);
+            });
+        });
+
+        // Quick action tab links
+        tabLinks.forEach(link => {
+            link.addEventListener("click", e => {
+                e.preventDefault();
+                const tabName = link.getAttribute('data-tab');
+                switchTab(tabName);
+            });
+        });
+
+        // Check if there's a tab in URL hash
+        const hash = window.location.hash.substring(1);
+        if (hash) {
+            switchTab(hash);
+        }
+    });
+
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+    }
+
+    function showOrderDetails(orderId) {
+        window.location.href = `/order/${orderId}/`;
+    }
+
+    // Close sidebar when clicking on overlay
+    document.querySelector('.sidebar-overlay').addEventListener('click', toggleSidebar);
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+    });
+</script>
+{% endblock %}

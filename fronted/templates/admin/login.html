@@ -1,0 +1,121 @@
+{% extends "admin/login.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+  body {
+    background-color: #f3f4f6 !important;
+    font-family: "Poppins", sans-serif !important;
+  }
+  .login-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .login-container {
+    background: #ffffff;
+    padding: 40px 35px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    animation: fadeIn 0.8s ease;
+  }
+  .login-logo {
+    width: 120px;
+    margin-bottom: 10px;
+  }
+  .login-container h2 {
+    color: #2e7d32;
+    font-weight: 600;
+    margin-bottom: 25px;
+    font-size: 22px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .input-group {
+    position: relative;
+  }
+  .login-container input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #C8E6C9;
+    border-radius: 8px;
+    font-size: 15px;
+  }
+  .toggle-pass {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #2e7d32;
+  }
+  .login-container button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #43A047, #66BB6A);
+    border: none;
+    color: #fff;
+    font-size: 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .login-container button:hover {
+    background: linear-gradient(135deg, #388E3C, #4CAF50);
+  }
+  @keyframes fadeIn {
+    from {opacity:0; transform:translateY(-10px);}
+    to {opacity:1; transform:translateY(0);}
+  }
+</style>
+
+<div class="login-section">
+  <div class="login-container">
+
+    <img src="{% static 'images/Fernshub Logo.png' %}" alt="Fernshub Logo" class="login-logo">
+
+    <h2>Admin Login</h2>
+
+    {% if form.errors %}
+      <div style="color:#e53935; padding:8px; background:#ffebee; border-radius:8px; font-size:14px;">
+        Invalid login details. Please try again.
+      </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'admin:login' %}">
+      {% csrf_token %}
+
+      <div class="input-group">
+        <input type="text" name="username" placeholder="Email" required>
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <span class="toggle-pass" onclick="togglePassword()">👁️</span>
+      </div>
+
+      <input type="hidden" name="next" value="{{ next }}">
+
+      <button type="submit">Login</button>
+    </form>
+
+  </div>
+</div>
+
+<script>
+function togglePassword() {
+  const pass = document.getElementById("password");
+  pass.type = pass.type === "password" ? "text" : "password";
+}
+</script>
+
+{% endblock %}

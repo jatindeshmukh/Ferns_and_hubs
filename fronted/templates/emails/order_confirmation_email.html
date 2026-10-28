@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Confirmation - FernsHub</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f6f7fb;
+      margin: 0;
+      padding: 0;
+    }
+    .email-container {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .header {
+      background: #27ae60;
+      color: #fff;
+      padding: 25px;
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .content {
+      padding: 25px;
+      color: #333;
+      line-height: 1.6;
+    }
+    .order-box {
+      background: #f1faf3;
+      padding: 15px;
+      border-left: 4px solid #27ae60;
+      margin: 15px 0;
+      border-radius: 8px;
+    }
+    .items-list {
+      list-style: none;
+      padding: 0;
+    }
+    .items-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .btn {
+      display: inline-block;
+      margin: 20px 0;
+      padding: 12px 20px;
+      background: #27ae60;
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .footer {
+      background: #f0f0f0;
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="email-container">
+
+    <div class="header">
+      FernsHub
+    </div>
+
+    <div class="content">
+      <p>Hello <strong>{{ user.username }}</strong>,</p>
+      <p>Thank you for shopping with <strong>FernsHub</strong>! Your order has been successfully placed 🎉</p>
+
+      <div class="order-box">
+        <p><strong>Order ID:</strong> {{ order.id }}</p>
+        <p><strong>Order Date:</strong> {{ order_date|date:"F d, Y" }}</p>
+      </div>
+
+      <h3>Order Summary</h3>
+      <ul class="items-list">
+        {% for item in order_items %}
+        <li><strong>{{ item.product.name }}</strong> × {{ item.quantity }} — ₹{{ item.price }}</li>
+        {% endfor %}
+      </ul>
+
+      <p><strong style="font-size:18px;">Total: ₹{{ order.total_price }}</strong></p>
+
+      <a href="{{ order_url }}" class="btn">View Your Order</a>
+
+      <p>We hope your shopping experience was delightful. 🌿<br>
+      If you have any questions, feel free to contact us anytime.</p>
+
+      <p>Warm regards,<br><strong>FernsHub Team</strong></p>
+    </div>
+
+    <div class="footer">
+      © {{ current_year }} FernsHub. All Rights Reserved.
+      <br>Need help? Email us at support@fernshub.com
+    </div>
+  </div>
+</body>
+</html>

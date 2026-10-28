@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #198754 0%, #157347 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+        .order-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .product-item { border-bottom: 1px solid #eee; padding: 10px 0; }
+        .total-section { border-top: 2px solid #198754; padding-top: 15px; margin-top: 15px; }
+        .footer { text-align: center; margin-top: 30px; color: #666; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Order Confirmed!</h1>
+            <p>Thank you for your purchase, {{ user.username }}!</p>
+        </div>
+        
+        <div class="content">
+            <h2>Order #{{ order.id }}</h2>
+            <p>We're excited to let you know that your order has been confirmed and is being processed.</p>
+            
+            <div class="order-details">
+                <h3>Order Summary</h3>
+                
+                <!-- Order Items -->
+                {% for item in order_items %}
+                <div class="product-item">
+                    <strong>{{ item.product.name }}</strong><br>
+                    Quantity: {{ item.quantity }} × ₹{{ item.price }} = ₹{{ item.total_price }}
+                </div>
+                {% endfor %}
+                
+                <!-- Order Totals -->
+                <div class="total-section">
+                    <p><strong>Subtotal: ₹{{ order.total_price }}</strong></p>
+                    <p>Shipping: {% if order.total_price > 500 %}FREE{% else %}₹50{% endif %}</p>
+                    <p>Tax: ₹{{ tax_amount|default:"0.00" }}</p>
+                    <p><strong>Total: ₹{{ order.total_price }}</strong></p>
+                </div>
+            </div>
+            
+            <!-- Delivery Information -->
+            <div class="order-details">
+                <h3>Delivery Information</h3>
+                <p><strong>Estimated Delivery:</strong> {{ estimated_delivery }}</p>
+                <p><strong>Shipping Address:</strong><br>
+                {% if order.address %}
+                    {{ order.address.full_name }}<br>
+                    {{ order.address.street_address }}<br>
+                    {{ order.address.city }}, {{ order.address.state }} - {{ order.address.postal_code }}<br>
+                    {{ order.address.country }}<br>
+                    Phone: {{ order.address.phone }}
+                {% else %}
+                    Address details not available
+                {% endif %}
+                </p>
+            </div>
+            
+            <!-- Next Steps -->
+            <div class="order-details">
+                <h3>What's Next?</h3>
+                <p>1. We'll process your order within 24 hours</p>
+                <p>2. You'll receive a shipping confirmation email with tracking details</p>
+                <p>3. Your order will be delivered by {{ estimated_delivery }}</p>
+            </div>
+            
+            <!-- Support Information -->
+            <div style="text-align: center; margin-top: 30px;">
+                <p>Need help? Contact our support team:</p>
+                <p>📧fernshub@gmail.com | 📞 +91-7666804589</p>
+                <p>Visit our website: <a href="{{ site_url }}">{{ site_url }}</a></p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2025 FernsHub. All rights reserved.</p>
+            <p>Happy Planting! 🌿</p>
+        </div>
+    </div>
+</body>
+</html>

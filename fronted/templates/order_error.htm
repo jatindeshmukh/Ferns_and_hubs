@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Not Found - FernsHub</title>
+    <style>
+        .error-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .error-icon {
+            font-size: 48px;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-icon">❌</div>
+        <h1>Order Not Found</h1>
+        <p>{{ error_message }}</p>
+        <p><strong>Order ID:</strong> {{ request.resolver_match.kwargs.order_id }}</p>
+        <div>
+            <a href="{% url 'home' %}" class="btn">Return to Home</a>
+            <a href="{% url 'dashboard' %}" class="btn">View Dashboard</a>
+            <a href="{% url 'view_cart' %}" class="btn">Back to Cart</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!-- Overview Section -->
+<section id="overview" class="tab-content active">
+    <h2 class="section-title">Dashboard Overview</h2>
+    
+    <!-- Overview Cards -->
+    <div class="dashboard-overview">
+        <div class="summary-boxes">
+            <div class="summary-box">
+                <div class="icon-wrapper">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <h3>Total Orders</h3>
+                <div class="number">{{ total_orders }}</div>
+                <p class="description">Your all-time orders</p>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="overview-card">
+                    <i class="fas fa-truck"></i>
+                    <div class="number">{{ pending_count }}</div>
+                    <h3>Pending Orders</h3>
+                    <p class="description">Orders being processed</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="overview-card">
+                    <i class="fas fa-check-circle"></i>
+                    <div class="number">{{ delivered_count }}</div>
+                    <h3>Delivered</h3>
+                    <p class="description">Successfully delivered</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="overview-card">
+                    <i class="fas fa-wallet"></i>
+                    <div class="number">₹{{ total_spent }}</div>
+                    <h3>Total Spent</h3>
+                    <p class="description">Your total expenditure</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <h3 class="mb-4">Quick Actions</h3>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <a href="{% url 'all_products' %}" class="text-decoration-none">
+                    <div class="action-card">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h5>Shop Now</h5>
+                        <p>Browse our products</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <a href="#" data-tab="addresses" class="text-decoration-none tab-link">
+                    <div class="action-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h5>Manage Addresses</h5>
+                        <p>Update your addresses</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <a href="#" data-tab="orders" class="text-decoration-none tab-link">
+                    <div class="action-card">
+                        <i class="fas fa-box-open"></i>
+                        <h5>View Orders</h5>
+                        <p>Check your orders</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <a href="#" data-tab="profile" class="text-decoration-none tab-link">
+                    <div class="action-card">
+                        <i class="fas fa-user-edit"></i>
+                        <h5>Edit Profile</h5>
+                        <p>Update your information</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Addresses Preview -->
+    {% include 'dashboard/includes/recent_addresses.html' %}
+
+    <!-- Recent Orders Preview -->
+    {% include 'dashboard/includes/recent_orders.html' %}
+</section>

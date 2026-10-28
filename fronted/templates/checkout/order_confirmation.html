@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { 
+            font-family: 'Arial', sans-serif; 
+            line-height: 1.6; 
+            color: #333; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f4f4f4;
+        }
+        
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: white;
+        }
+        .header { 
+            background: linear-gradient(135deg, #198754 0%, #157347 100%); 
+            color: white; 
+            padding: 30px 20px; 
+            text-align: center; 
+        }
+        .header h1 { 
+            margin: 0; 
+            font-size: 28px;
+        }
+        .content { 
+            padding: 30px; 
+        }
+        .order-details { 
+            background: #f8f9fa; 
+            padding: 20px; 
+            margin: 20px 0; 
+            border-radius: 8px;
+            border-left: 4px solid #198754;
+        }
+        .order-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .order-items th {
+            background: #198754;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        .order-items td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        .order-items tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        .total-row {
+            background: #e8f5e8 !important;
+            font-weight: bold;
+        }
+        .footer { 
+            text-align: center; 
+            padding: 20px; 
+            color: #666; 
+            font-size: 12px;
+            background: #f8f9fa;
+            border-top: 1px solid #ddd;
+        }
+        .btn {
+            display: inline-block;
+            background: #198754;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 5px;
+        }
+        .address-box {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+        }
+        .thank-you {
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Order Confirmed!</h1>
+            <p>Thank you for shopping with FernsHub</p>
+        </div>
+        
+        <div class="content">
+            <div class="thank-you">
+                <h2>Hello {{ user.username }},</h2>
+                <p>Your order has been confirmed and is being processed. We'll notify you when it ships!</p>
+            </div>
+            
+            <div class="order-details">
+                <h3 style="margin-top: 0; color: #198754;">Order Information</h3>
+                <p><strong>Order ID:</strong> #{{ order.id }}</p>
+                <p><strong>Order Date:</strong> {{ order_date }}</p>
+                <p><strong>Total Amount:</strong> ₹{{ order.total_price }}</p>
+                <p><strong>Payment Method:</strong> 
+                    {% if order.payment_method == 'cod' %}
+                    Cash on Delivery
+                    {% else %}
+                    Online Payment
+                    {% endif %}
+                </p>
+                <p><strong>Status:</strong> <span style="color: #198754; font-weight: bold;">Confirmed</span></p>
+            </div>
+
+            <h3>Shipping Address:</h3>
+            <div class="address-box">
+                <strong>{{ order.address.full_name }}</strong><br>
+                {{ order.address.address_line }}<br>
+                {{ order.address.city }}, {{ order.address.state }} - {{ order.address.postal_code }}<br>
+                {{ order.address.country }}<br>
+                📞 {{ order.address.phone }}
+            </div>
+            
+            <h3>Order Items:</h3>
+            <table class="order-items">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>₹{{ item.price }}</td>
+                        <td>₹{{ item.get_total_price }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="3" style="text-align: right;"><strong>Grand Total:</strong></td>
+                        <td><strong>₹{{ order.total_price }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="{{ site_url }}{% url 'dashboard' %}" class="btn">Track Your Order</a>
+                <a href="{{ site_url }}{% url 'all_products' %}" class="btn" style="background: #6c757d;">Continue Shopping</a>
+            </div>
+
+            <div style="background: #e8f5e8; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                <h4 style="margin-top: 0; color: #155724;">📦 What's Next?</h4>
+                <ul style="margin-bottom: 0;">
+                    <li>We'll process your order within 24 hours</li>
+                    <li>You'll receive a shipping confirmation email</li>
+                    <li>Expected delivery: 3-5 business days</li>
+                    <li>Track your order in your dashboard</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>FernsHub - Your Trusted Plant Nursery</strong></p>
+            <p>📍 Green Valley, Plant City | 📞 +7888189455</p>
+            <p>📧 support@fernshub.com | 🌐 www.fernshub.com</p>
+            <p>If you have any questions, feel free to reply to this email.</p>
+            <p>© 2024 FernsHub. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}All Plant Categories - FernsHub{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">All Plant Categories</h1>
+            <p class="lead">Explore our wide variety of plant categories</p>
+        </div>
+    </div>
+    
+    <div class="row">
+        {% for category in categories %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ category.name }}</h5>
+                    <p class="card-text">{{ category.description|default:"Discover beautiful plants in this category" }}</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'category_view' category.slug %}" class="btn btn-primary btn-sm">
+                        View Plants
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">No categories available at the moment.</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

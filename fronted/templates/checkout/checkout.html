@@ -1,0 +1,702 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - FernsHub</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
+    <style>
+        /* Custom CSS for Checkout Page */
+        :root {
+            --primary-color: #198754;
+            --primary-dark: #157347;
+            --light-green: #e8f5e8;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Header Styles */
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: white !important;
+        }
+
+        .navbar-brand img {
+            transition: var(--transition);
+        }
+
+        .navbar-brand:hover img {
+            transform: scale(1.05);
+        }
+
+        .search-group {
+            max-width: 500px;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-radius: var(--border-radius);
+        }
+
+        /* Checkout Specific Styles */
+        .checkout-card {
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border: none;
+        }
+
+        .checkout-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+        }
+
+        .address-card {
+            transition: var(--transition);
+            cursor: pointer;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+
+        .address-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .selected-address {
+            background-color: rgba(25, 135, 84, 0.05) !important;
+            border-color: var(--primary-color) !important;
+        }
+
+        .product-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+        }
+
+        .product-image-placeholder {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+
+        .checkout-sidebar {
+            top: 100px;
+            border-radius: var(--border-radius);
+        }
+
+        .payment-select {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: var(--transition);
+        }
+
+        .payment-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+        }
+
+        .place-order-btn {
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 12px 24px;
+            transition: var(--transition);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border: none;
+        }
+
+        .place-order-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(25, 135, 84, 0.4);
+        }
+
+        .place-order-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            margin-top: auto;
+        }
+
+        footer h5 {
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        footer h5::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary-color);
+        }
+
+        footer a {
+            transition: var(--transition);
+        }
+
+        footer a:hover {
+            color: var(--primary-color) !important;
+            padding-left: 5px;
+        }
+
+        /* Loading Animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .place-order-btn:disabled {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Progress bar animation */
+        .progress-bar-animated {
+            animation: progress-bar-stripes 1s linear infinite;
+        }
+
+        @keyframes progress-bar-stripes {
+            0% { background-position: 1rem 0; }
+            100% { background-position: 0 0; }
+        }
+
+        /* Responsive design */
+        @media (max-width: 991.98px) {
+            .checkout-sidebar {
+                position: static !important;
+                margin-top: 2rem;
+            }
+            
+            .address-card {
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .container.py-5 {
+                padding-top: 2rem !important;
+                padding-bottom: 2rem !important;
+            }
+            
+            .product-image,
+            .product-image-placeholder {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .btn-lg {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Utility Classes */
+        .fw-medium {
+            font-weight: 500;
+        }
+
+        .border-2 {
+            border-width: 2px !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <img src="{% static 'images/Fernshub Logo.png' %}" alt="FernsHub Logo" width="80">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- Search Bar -->
+                <form class="d-flex mx-auto my-2 my-lg-0 w-100 search-group" method="GET" action="{% url 'product_search' %}">
+                    <input name="q" class="form-control me-2" type="search" placeholder="Search for Products..." aria-label="Search" value="{{ request.GET.q }}">
+                    <button class="btn btn-outline-success" type="submit"><i class="fas fa-search"></i></button>
+                </form>
+
+                <ul class="navbar-nav ms-auto align-items-center">
+                    {% if user %}
+                        <!-- Notifications -->
+                        <li class="nav-item dropdown me-3">
+                            <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-bell"></i>
+                                {% if unread_notifications_count > 0 %}
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                                    {{ unread_notifications_count }}
+                                </span>
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow" style="width: 350px;">
+                                <li class="dropdown-header">Notifications</li>
+                                {% if notifications %}
+                                    {% for notification in notifications %}
+                                    <li>
+                                        <div class="dropdown-item-text">
+                                            <div class="fw-bold">{{ notification.message }}</div>
+                                            <small class="text-muted">{{ notification.created_at|timesince }} ago</small>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li class="dropdown-item-text text-muted">No notifications</li>
+                                {% endif %}
+                            </ul>
+                        </li>
+
+                        <!-- User Dropdown -->
+                        <li class="nav-item dropdown me-3">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle fa-lg me-1 text-success"></i>
+                                <span class="d-none d-md-inline">{{ user.username }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i class="fas fa-user me-2"></i>Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{% url 'my_orders' %}"><i class="fas fa-shopping-bag me-2"></i>My Orders</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item me-3">
+                            <a class="btn btn-success" href="{% url 'login' %}"><i class="fas fa-user me-2"></i>Login</a>
+                        </li>
+                    {% endif %}
+
+                    <!-- Cart -->
+                    <li class="nav-item position-relative">
+                            <a href="{% url 'view_cart' %}">
+                            <i class="fas fa-shopping-cart fa-lg"></i>
+                            <span id="cart-count" class="badge bg-success position-absolute top-0 start-100 translate-middle rounded-pill">
+                                {{ cart_items_count }}
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2 class="fw-bold text-success mb-4"><i class="fas fa-shopping-bag me-2"></i>Checkout</h2>
+
+                <!-- Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-triangle{% endif %} me-2"></i>
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- Address Selection -->
+                <div class="card checkout-card shadow-sm mb-4">
+                    <div class="card-header bg-success text-white py-3">
+                        <h5 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Select Delivery Address</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if addresses %}
+                            <form method="POST" action="{% url 'checkout' %}" id="checkout-form">
+                                {% csrf_token %}
+                                <div class="row g-3">
+                                    {% for address in addresses %}
+                                    <div class="col-md-6">
+                                        <div class="card address-card {% if address.is_default %}border-success selected-address{% endif %} h-100 position-relative">
+                                            <div class="card-body">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="address_id" 
+                                                           id="address{{ address.id }}" value="{{ address.id }}" 
+                                                           {% if address.is_default %}checked{% endif %} required>
+                                                    <label class="form-check-label w-100" for="address{{ address.id }}">
+                                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                                            <h6 class="mb-1 fw-bold">{{ address.full_name }}</h6>
+                                                            {% if address.is_default %}
+                                                            <span class="badge bg-success">Default</span>
+                                                            {% endif %}
+                                                        </div>
+                                                        <p class="text-muted small mb-1">{{ address.address_line }}</p>
+                                                        <p class="text-muted small mb-1">{{ address.city }}, {{ address.state }} - {{ address.postal_code }}</p>
+                                                        <p class="text-muted small mb-1">{{ address.country }}</p>
+                                                        <p class="text-muted small mb-0"><i class="fas fa-phone me-1"></i>{{ address.phone }}</p>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer bg-transparent border-0 pt-0">
+                                                <div class="d-flex gap-2">
+                                                    <a href="{% url 'edit_address' address.id %}?from_checkout=1" class="btn btn-outline-primary btn-sm">
+                                                        <i class="fas fa-edit me-1"></i>Edit
+                                                    </a>
+                                                    <a href="{% url 'delete_address' address.id %}?from_checkout=1" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this address?')">
+                                                        <i class="fas fa-trash me-1"></i>Delete
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <a href="{% url 'add_address' %}?from_checkout=1" class="btn btn-outline-success">
+                                        <i class="fas fa-plus me-2"></i>Add New Address
+                                    </a>
+                                </div>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-map-marker-alt fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">No addresses found</h5>
+                                <p class="text-muted mb-3">Please add a delivery address to continue.</p>
+                                <a href="{% url 'add_address' %}?from_checkout=1" class="btn btn-success">
+                                    <i class="fas fa-plus me-2"></i>Add Address
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="card checkout-card shadow-sm">
+                    <div class="card-header bg-light py-3">
+                        <h5 class="mb-0"><i class="fas fa-receipt me-2"></i>Order Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        {% for item in cart_items %}
+                        <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                            <div class="d-flex align-items-center">
+                                {% if item.product.image %}
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" 
+                                     class="rounded me-3 product-image">
+                                {% else %}
+                                <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center product-image-placeholder">
+                                    <i class="fas fa-leaf text-muted"></i>
+                                </div>
+                                {% endif %}
+                                <div>
+                                    <h6 class="mb-1 fw-bold">{{ item.product.name }}</h6>
+                                    <p class="text-muted small mb-0">Quantity: {{ item.quantity }}</p>
+                                    <p class="text-muted small mb-0">Price: ₹{{ item.product.price }}</p>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <h6 class="mb-0 fw-bold text-success">₹{{ item.total_price }}</h6>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        <div class="border-top pt-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted">Subtotal</span>
+                                <span class="fw-medium">₹{{ cart_items_total }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted">Shipping</span>
+                                <span class="text-success fw-medium">Free</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted">Tax</span>
+                                <span class="fw-medium">₹0</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center fw-bold fs-5 mt-3 pt-3 border-top">
+                                <span>Total Amount</span>
+                                <span class="text-success">₹{{ cart_items_total }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <!-- Checkout Actions -->
+                <div class="card checkout-card shadow-sm sticky-top checkout-sidebar">
+                    <div class="card-body">
+                        <h5 class="text-success mb-4"><i class="fas fa-shopping-bag me-2"></i>Complete Your Order</h5>
+                        
+                        {% if addresses %}
+                            <!-- Payment Method Selection -->
+                            <div class="mb-4">
+                                <label for="payment_method" class="form-label fw-medium">Payment Method</label>
+                                <select class="form-select payment-select" id="payment_method" name="payment_method" required>
+                                    <option value="cod" selected>Cash on Delivery</option>
+                                    <option value="online">Online Payment</option>
+                                </select>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    <span id="payment-description">Pay when your order is delivered</span>
+                                </div>
+                            </div>
+
+                            <!-- Order Security Info -->
+                            <div class="alert alert-light border mb-4">
+                                <div class="d-flex">
+                                    <i class="fas fa-shield-alt text-success me-3 mt-1"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Secure Checkout</h6>
+                                        <p class="small text-muted mb-0">Your personal information is protected with 256-bit SSL encryption</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Order Summary in Sidebar -->
+                            <div class="border-top pt-3 mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted">Items ({{ cart_items_count }})</span>
+                                    <span>₹{{ cart_items_total }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted">Delivery</span>
+                                    <span class="text-success">Free</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center fw-bold fs-6">
+                                    <span>Total</span>
+                                    <span class="text-success">₹{{ cart_items_total }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success btn-lg place-order-btn" id="place-order-btn">
+                                    <i class="fas fa-lock me-2"></i>Place Order
+                                </button>
+                            </div>
+                            </form> <!-- CLOSING FORM TAG -->
+                        {% else %}
+                            <div class="alert alert-warning">
+                                <div class="d-flex">
+                                    <i class="fas fa-exclamation-triangle me-2 mt-1"></i>
+                                    <div>
+                                        <small class="fw-medium">Please add a delivery address to place your order.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="mt-3 text-center">
+                            <a href="{% url 'view_cart' %}" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-arrow-left me-1"></i>Back to Cart
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark text-white mt-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 text-center text-md-start">
+                    <img src="{% static 'images/Fernshub Logo.png' %}" alt="FernsHub Logo" class="img-fluid mb-3" style="max-width: 150px;">
+                    <p class="mb-3">Your trusted online plant nursery for fresh greenery and natural products.</p>
+                    <div class="d-flex justify-content-center justify-content-md-start gap-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-3">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'home' %}" class="text-white text-decoration-none">Home</a></li>
+                        <li class="mb-2"><a href="{% url 'all_products' %}" class="text-white text-decoration-none">All Products</a></li>
+                        <li class="mb-2"><a href="{% url 'faqs' %}" class="text-white text-decoration-none">FAQs</a></li>
+                        <li class="mb-2"><a href="{% url 'dashboard' %}" class="text-white text-decoration-none">My Account</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-3">
+                    <h5 class="mb-3">Categories</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'indoor_plants' %}" class="text-white text-decoration-none">Indoor Plants</a></li>
+                        <li class="mb-2"><a href="{% url 'outdoor_plants' %}" class="text-white text-decoration-none">Outdoor Plants</a></li>
+                        <li class="mb-2"><a href="{% url 'flowering_plants' %}" class="text-white text-decoration-none">Flowering Plants</a></li>
+                        <li class="mb-2"><a href="{% url 'medicinal_plants' %}" class="text-white text-decoration-none">Medicinal Plants</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="mb-3">Customer Service</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'shipping_returns' %}" class="text-white text-decoration-none">Shipping & Returns</a></li>
+                        <li class="mb-2"><a href="{% url 'privacy_policy' %}" class="text-white text-decoration-none">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="{% url 'terms_conditions' %}" class="text-white text-decoration-none">Terms & Conditions</a></li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i>+7888189455</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i>support@fernshub.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-4">
+            
+            <div class="text-center">
+                <p class="mb-0">© 2025 FernsHub. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center py-5">
+                    <div class="spinner-border text-success mb-3" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h5 class="text-success mb-2">Processing Your Order...</h5>
+                    <p class="text-muted mb-0">Please wait while we confirm your order details.</p>
+                    <div class="progress mt-3" style="height: 4px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkoutForm = document.getElementById('checkout-form');
+            const placeOrderBtn = document.getElementById('place-order-btn');
+            const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+            const paymentMethod = document.getElementById('payment_method');
+            const paymentDescription = document.getElementById('payment-description');
+            
+            // Handle payment method change
+            if (paymentMethod) {
+                paymentMethod.addEventListener('change', function() {
+                    if (this.value === 'online') {
+                        paymentDescription.textContent = 'Secure online payment with encryption';
+                        // For future implementation: Uncomment below when online payment is ready
+                        // alert('Online payment integration will be implemented soon! For now, please use Cash on Delivery.');
+                        // this.value = 'cod'; // Reset to COD for now
+                    } else {
+                        paymentDescription.textContent = 'Pay when your order is delivered';
+                    }
+                });
+            }
+
+            if (checkoutForm && placeOrderBtn) {
+                checkoutForm.addEventListener('submit', function(e) {
+                    // Validate address selection
+                    const selectedAddress = document.querySelector('input[name="address_id"]:checked');
+                    if (!selectedAddress) {
+                        e.preventDefault();
+                        showAlert('Please select a delivery address.', 'warning');
+                        return;
+                    }
+
+                    // Validate payment method
+                    const paymentMethod = document.getElementById('payment_method');
+                    if (!paymentMethod.value) {
+                        e.preventDefault();
+                        showAlert('Please select a payment method.', 'warning');
+                        return;
+                    }
+
+                    // Show loading modal
+                    loadingModal.show();
+                    
+                    // Disable the button to prevent multiple submissions
+                    placeOrderBtn.disabled = true;
+                    placeOrderBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing Order...';
+                    
+                    // Form will continue to submit normally
+                });
+            }
+
+            // Add address selection validation and styling
+            const addressRadios = document.querySelectorAll('input[name="address_id"]');
+            addressRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // Remove previous selections
+                    document.querySelectorAll('.address-card').forEach(card => {
+                        card.classList.remove('border-success', 'selected-address');
+                    });
+                    
+                    // Highlight selected address
+                    if (this.checked) {
+                        const selectedCard = this.closest('.address-card');
+                        selectedCard.classList.add('border-success', 'selected-address');
+                    }
+                });
+            });
+
+            // Initialize address cards based on default selection
+            function initializeAddressCards() {
+                const defaultAddress = document.querySelector('input[name="address_id"]:checked');
+                if (defaultAddress) {
+                    const selectedCard = defaultAddress.closest('.address-card');
+                    selectedCard.classList.add('border-success', 'selected-address');
+                }
+            }
+
+            // Show custom alert function
+            function showAlert(message, type = 'info') {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+                alertDiv.innerHTML = `
+                    <i class="fas fa-${type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                
+                // Insert after the main heading
+                const heading = document.querySelector('h2.fw-bold');
+                heading.parentNode.insertBefore(alertDiv, heading.nextSibling);
+                
+                // Auto remove after 5 seconds
+                setTimeout(() => {
+                    if (alertDiv.parentNode) {
+                        alertDiv.remove();
+                    }
+                }, 5000);
+            }
+
+            // Initialize on page load
+            initializeAddressCards();
+        });
+    </script>
+</body>
+</html>

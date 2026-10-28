@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ plant.name }}</title>
+</head>
+<body>
+    <h1>{{ plant.name }}</h1>
+    <h3>Scientific Name: {{ plant.scientific_name }}</h3>
+    <p>{{ plant.description }}</p>
+    <p><strong>Added by:</strong> {{ plant.user.username }}</p>
+    <a href="{% url 'plant_list' %}">Back to all plants</a>
+</body>
+</html>

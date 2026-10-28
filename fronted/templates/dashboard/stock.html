@@ -1,0 +1,63 @@
+<!-- Stock Section -->
+<section id="stock" class="tab-content">
+    <h2 class="section-title">My Products / Stock</h2>
+    {% if products %}
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Sold</th>
+                                <th>Stock Left</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        {% if product.image %}
+                                            <img src="{{ product.image.url }}" alt="{{ product.name }}" 
+                                                 class="rounded me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                        {% else %}
+                                            <div class="rounded bg-light me-2 d-flex align-items-center justify-content-center" 
+                                                 style="width: 40px; height: 40px;">
+                                                <i class="fas fa-image text-muted"></i>
+                                            </div>
+                                        {% endif %}
+                                        <span class="fw-medium">{{ product.name }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ product.category.name }}</td>
+                                <td class="fw-bold">₹{{ product.price }}</td>
+                                <td>{{ product.sold_quantity|default:0 }}</td>
+                                <td class="fw-bold">{{ product.stock_quantity }}</td>
+                                <td>
+                                    {% if product.stock_quantity <= 0 %}
+                                        <span class="stock-status out-of-stock">Out of Stock</span>
+                                    {% elif product.stock_quantity <= 5 %}
+                                        <span class="stock-status low-stock">Low Stock</span>
+                                    {% else %}
+                                        <span class="stock-status in-stock">In Stock</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-cubes"></i>
+            <h4 class="text-muted">No products to manage</h4>
+            <p class="text-muted">You don't have any products listed yet.</p>
+        </div>
+    {% endif %}
+</section>
