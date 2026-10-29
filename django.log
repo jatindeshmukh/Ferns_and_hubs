@@ -12294,3 +12294,109 @@ INFO 2026-10-28 12:31:25,765 basehttp 11456 11332 "GET /admin/jsi18n/ HTTP/1.1" 
 WARNING 2026-10-28 12:36:18,201 log 11456 11332 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2026-10-28 12:36:18,202 basehttp 11456 11332 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 19052
 INFO 2026-10-28 12:37:37,277 basehttp 11456 11332 "GET /about-us/ HTTP/1.1" 200 43725
+INFO 2026-10-28 23:01:01,117 autoreload 18788 17308 Watching for file changes with StatReloader
+WARNING 2026-10-28 23:01:10,848 log 18788 18240 Not Found: /favicon.ico
+WARNING 2026-10-28 23:01:10,850 basehttp 18788 18240 "GET /favicon.ico HTTP/1.1" 404 18941
+INFO 2026-10-28 23:01:17,860 basehttp 18788 18240 "GET /about-us/ HTTP/1.1" 200 43721
+INFO 2026-10-28 23:01:18,982 basehttp 18788 18240 "GET /about-us/ HTTP/1.1" 200 43721
+INFO 2026-10-28 23:01:21,821 basehttp 18788 18240 "GET / HTTP/1.1" 200 52780
+INFO 2026-10-28 23:01:32,166 basehttp 18788 18240 "GET /outdoor-plants/ HTTP/1.1" 200 43097
+INFO 2026-10-28 23:01:48,298 basehttp 18788 18240 "GET /admin/fronted/address/ HTTP/1.1" 200 13984
+INFO 2026-10-28 23:01:50,859 basehttp 18788 18240 "GET /admin/fronted/addtocart/ HTTP/1.1" 200 12967
+INFO 2026-10-28 23:01:51,818 basehttp 18788 18240 "GET /admin/fronted/user/ HTTP/1.1" 200 17635
+INFO 2026-10-28 23:01:52,540 basehttp 18788 18240 "GET /admin/fronted/review/ HTTP/1.1" 200 14555
+INFO 2026-10-28 23:01:53,320 basehttp 18788 18240 "GET /admin/fronted/product/ HTTP/1.1" 200 14423
+INFO 2026-10-28 23:01:54,109 basehttp 18788 18240 "GET /admin/fronted/plantcategory/ HTTP/1.1" 200 13002
+INFO 2026-10-28 23:01:54,715 basehttp 18788 18240 "GET /admin/fronted/user/ HTTP/1.1" 200 17635
+INFO 2026-10-28 23:02:03,597 basehttp 18788 18240 "GET / HTTP/1.1" 200 52780
+INFO 2026-10-28 23:02:09,262 basehttp 18788 18240 "GET /admin/ HTTP/1.1" 200 13142
+INFO 2026-10-28 23:02:12,450 basehttp 18788 18240 "GET /admin/fronted/address/ HTTP/1.1" 200 13984
+INFO 2026-10-28 23:02:12,567 basehttp 18788 18240 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-10-28 23:02:15,482 basehttp 18788 18240 "GET /admin/fronted/user/ HTTP/1.1" 200 17635
+INFO 2026-10-28 23:02:15,495 basehttp 18788 18240 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-10-28 23:04:23,264 basehttp 18788 18240 "GET /admin/fronted/review/ HTTP/1.1" 200 14555
+INFO 2026-10-28 23:04:23,277 basehttp 18788 18240 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-10-28 23:04:25,346 basehttp 18788 18240 "GET /admin/fronted/product/ HTTP/1.1" 200 14423
+INFO 2026-10-28 23:04:25,360 basehttp 18788 18240 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-10-28 23:04:27,236 basehttp 18788 18240 "GET /admin/fronted/plantcategory/ HTTP/1.1" 200 13002
+INFO 2026-10-28 23:04:27,251 basehttp 18788 18240 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-10-28 23:04:29,116 basehttp 18788 18240 "GET /admin/fronted/order/ HTTP/1.1" 200 15122
+INFO 2026-10-28 23:04:29,128 basehttp 18788 18240 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-10-29 11:08:48,425 autoreload 10072 9476 Watching for file changes with StatReloader
+INFO 2026-10-29 11:09:30,108 basehttp 10072 22204 code 400, message Bad request version ('"\x19\x88\x9b¯\x9f"`')
+ERROR 2026-10-29 11:09:30,110 basehttp 10072 22204 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:09:30,115 basehttp 10072 19372 code 400, message Bad request version ('wK¤0Óu?)0ºgs+1\x02\x9eÔ\x80>p.1e±\x7fD97p\x8fbK|f#CÇ5\x97pE\x023\x18.\x01\x89oP')
+ERROR 2026-10-29 11:09:30,116 basehttp 10072 19372 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:09:58,450 basehttp 10072 2068 code 400, message Bad request version ('ùÏ\x01>?$³uÓb')
+ERROR 2026-10-29 11:09:58,450 basehttp 10072 2068 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:09:58,453 basehttp 10072 19692 code 400, message Bad request version ('vEÊ\x18§§\x98²\x18\x0fÉ\x1a\x99\x91æ?\x08Ã\x9e\x80\x8d°nï')
+ERROR 2026-10-29 11:09:58,453 basehttp 10072 19692 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:09:59,051 basehttp 10072 14764 code 400, message Bad request version ('X,Ê`')
+ERROR 2026-10-29 11:09:59,052 basehttp 10072 14764 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:09:59,054 basehttp 10072 20712 code 400, message Bad request version ('ÚÚ\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06yZZ\x00\x00\x00\x12\x00\x00ÿ\x01\x00\x01\x00\x00')
+ERROR 2026-10-29 11:09:59,054 basehttp 10072 20712 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:09:59,558 basehttp 10072 18476 code 400, message Bad request version ('?6Ïâbà½')
+ERROR 2026-10-29 11:09:59,559 basehttp 10072 18476 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:09:59,560 basehttp 10072 17904 code 400, message Bad request version ('JJ\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06y**\x00\x00\x00')
+ERROR 2026-10-29 11:09:59,560 basehttp 10072 17904 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:09:59,991 basehttp 10072 14308 code 400, message Bad request version ('ÚÚ\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06Y**\x00\x00\x00+\x00\x07\x06')
+ERROR 2026-10-29 11:09:59,991 basehttp 10072 14308 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:09:59,993 basehttp 10072 14672 code 400, message Bad request version ('\x8aèï±*V>Ó\x03!#2äa`vÆjÄ\x98ÑÏüº«~\x11\x0eêÝ1ë\x99\x11ß\x93±\x93ò8ëU')
+ERROR 2026-10-29 11:09:59,993 basehttp 10072 14672 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:00,364 basehttp 10072 11672 code 400, message Bad request version ('\x02h2\x08http/1.1\x00\x1b\x00\x03\x02\x00\x02\x00\x17\x00\x00\x00')
+ERROR 2026-10-29 11:10:00,364 basehttp 10072 11672 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:00,367 basehttp 10072 20856 code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x06æ\x01\x00\x06â\x03\x03\x17íiêË<\x16üv´úm*N4v\x01')
+ERROR 2026-10-29 11:10:00,367 basehttp 10072 20856 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:28,694 basehttp 10072 15676 code 400, message Bad request version ('zz\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06YÚÚ\x00\x00\x00-\x00\x02\x01\x01\x00\x05\x00\x05\x01\x00\x00\x00\x00\x00\x1b\x00\x03\x02\x00\x02\x00')
+ERROR 2026-10-29 11:10:28,695 basehttp 10072 15676 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:28,699 basehttp 10072 17576 code 400, message Bad request version ('ê:_0\\\x05\x98\x9e')
+ERROR 2026-10-29 11:10:28,699 basehttp 10072 17576 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:29,282 basehttp 10072 7396 code 400, message Bad request version ('Z´þ\x01\x87r@þ\x01OßÕg|PÍÜ]õL¨Ò\x9fZã\x15tø&jÅ¤\x00')
+ERROR 2026-10-29 11:10:29,282 basehttp 10072 7396 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:29,284 basehttp 10072 15944 code 400, message Bad request version ('\x00\x02\x01\x00\x00-\x00\x02\x01\x01\x00\x1b\x00\x03\x02\x00\x02\x00\x05\x00\x05\x01\x00\x00\x00\x00\x00')
+ERROR 2026-10-29 11:10:29,284 basehttp 10072 15944 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:29,752 basehttp 10072 22668 code 400, message Bad request version ('GÆ\x8a\x957')
+ERROR 2026-10-29 11:10:29,752 basehttp 10072 22668 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:29,754 basehttp 10072 4236 code 400, message Bad request version ('\x99Í^')
+ERROR 2026-10-29 11:10:29,754 basehttp 10072 4236 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:30,812 basehttp 10072 4680 code 400, message Bad request version ('m\x88\x1a6\x82\x17ggó¤?ýÅxÕm[Ä6lqÌ;')
+ERROR 2026-10-29 11:10:30,813 basehttp 10072 4680 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:30,816 basehttp 10072 16184 code 400, message Bad request version ('\x04G~')
+ERROR 2026-10-29 11:10:30,816 basehttp 10072 16184 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:31,031 basehttp 10072 21296 code 400, message Bad request version ('\x03\x93\x195`\xad¤j\x8f+£èE\x8ft²X\x98u\x19\x97\x830å\x8fvÏI\x92"V')
+ERROR 2026-10-29 11:10:31,031 basehttp 10072 21296 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:31,033 basehttp 10072 21848 code 400, message Bad request syntax ('\x16\x03\x01\x06¦\x01\x00\x06¢\x03\x03pì¯ooÇÒ\x9e\x0e]áî\x9d\x96U(J)é¬Þ\x97\x9f\x97ÒÐzxg')
+ERROR 2026-10-29 11:10:31,033 basehttp 10072 21848 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:31,239 basehttp 10072 12672 code 400, message Bad request version ('ô')
+ERROR 2026-10-29 11:10:31,239 basehttp 10072 12672 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:31,241 basehttp 10072 18672 code 400, message Bad request version ('diß/\\T8Õñ0\x04Þ\x8f²\x00\x80²\x144\x84ùX\x02\x0f\x8d¼¶ù\x81$N«Òcbðq{®`Ê\x14Îâ.1\x19òjàÏKVN®wC\x8faR|ë\x13=Ò\\\x1a\x11\x89µ\x88^0\x9f\x88.\x12ªö\x04\x87\x00-\x00\x02\x01\x01\x00+\x00\x07\x06**\x03\x04\x03\x03\x00\x17\x00\x00\x00')
+ERROR 2026-10-29 11:10:31,241 basehttp 10072 18672 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:31,441 basehttp 10072 22468 code 400, message Bad request syntax ('\x16\x03\x01\x06Æ\x01\x00\x06Â\x03\x03\x04\x86ùr\x10Ë\x83m\x93\x00ÓØ!\x0f\x9dàÔØþÌ0\x90lÿ|O²ÒÚ0oæ ')
+ERROR 2026-10-29 11:10:31,441 basehttp 10072 22468 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:31,444 basehttp 10072 17544 code 400, message Bad request version ('´h\\\x05ÙMTW\x91\xadß\\\\')
+ERROR 2026-10-29 11:10:31,444 basehttp 10072 17544 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:31,634 basehttp 10072 8692 code 400, message Bad request version ('U¢»\x91}¿\x04·t\x98v|d7ÄWw\x0f')
+ERROR 2026-10-29 11:10:31,634 basehttp 10072 8692 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:10:31,636 basehttp 10072 22320 code 400, message Bad request version ('\x1b&Q')
+ERROR 2026-10-29 11:10:31,637 basehttp 10072 22320 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2026-10-29 11:30:18,277 autoreload 16036 15136 Watching for file changes with StatReloader
+INFO 2026-10-29 11:32:01,914 autoreload 7816 21120 Watching for file changes with StatReloader
+INFO 2026-10-29 11:32:11,368 basehttp 7816 20012 "GET / HTTP/1.1" 200 52780
+WARNING 2026-10-29 11:32:11,826 log 7816 20012 Not Found: /favicon.ico
+WARNING 2026-10-29 11:32:11,827 basehttp 7816 20012 "GET /favicon.ico HTTP/1.1" 404 18941
+INFO 2026-10-29 11:32:33,029 basehttp 7816 21624 "GET / HTTP/1.1" 200 50551
+INFO 2026-10-29 11:32:33,185 basehttp 7816 21624 - Broken pipe from ('127.0.0.1', 55282)
+INFO 2026-10-29 11:37:20,630 autoreload 20436 13280 Watching for file changes with StatReloader
+INFO 2026-10-29 11:37:29,738 basehttp 7816 10824 "GET / HTTP/1.1" 200 52780
+ERROR 2026-10-29 11:37:36,823 views 7816 10824 Error in dashboard: Cannot filter a query once a slice has been taken.
+INFO 2026-10-29 11:37:37,053 basehttp 7816 10824 "GET /dashboard/ HTTP/1.1" 200 74142
+INFO 2026-10-29 11:56:06,288 autoreload 20360 10548 Watching for file changes with StatReloader
+ERROR 2026-10-29 11:56:15,024 views 20360 19860 Error in dashboard: Cannot filter a query once a slice has been taken.
+INFO 2026-10-29 11:56:15,241 basehttp 20360 19860 "GET /dashboard/ HTTP/1.1" 200 74142
+INFO 2026-10-29 11:56:15,475 basehttp 20360 11268 "GET /static/js/add-to-cart.js HTTP/1.1" 200 3020
+INFO 2026-10-29 11:56:15,494 basehttp 20360 10768 "GET /static/css/styles.css HTTP/1.1" 200 1349
+INFO 2026-10-29 11:56:15,513 basehttp 20360 10696 "GET /static/images/Fernshub%20Logo.png HTTP/1.1" 200 14373
+INFO 2026-10-29 11:56:15,515 basehttp 20360 19860 "GET /static/css/home.css HTTP/1.1" 200 6203
+WARNING 2026-10-29 11:56:15,760 log 20360 19860 Not Found: /favicon.ico
+WARNING 2026-10-29 11:56:15,761 basehttp 20360 19860 "GET /favicon.ico HTTP/1.1" 404 18941
+INFO 2026-10-29 12:09:29,198 autoreload 20360 10548 E:\New folder\project\fernshub\fernshub\settings.py changed, reloading.
