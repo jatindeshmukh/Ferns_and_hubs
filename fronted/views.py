@@ -1335,7 +1335,7 @@ def ferns_palms(request):
         })
     except Exception as e:
         logger.error(f"Error in ferns_palms: {str(e)}")
-        return redirect('all_categories')
+        return redirect('categories')
 
 def foliage_plants(request):
     """Foliage Plants category page"""
@@ -1353,7 +1353,7 @@ def foliage_plants(request):
         })
     except Exception as e:
         logger.error(f"Error in foliage_plants: {str(e)}")
-        return redirect('all_categories')
+        return redirect('categories')
 
 def succulents_cactus(request):
     """Succulents & Cactus category page"""
@@ -1371,7 +1371,7 @@ def succulents_cactus(request):
         })
     except Exception as e:
         logger.error(f"Error in succulents_cactus: {str(e)}")
-        return redirect('all_categories')
+        return redirect('categories')
 
 def fruit_vegetable_plants(request):
     """Fruit & Vegetable Plants category page"""
@@ -1389,7 +1389,7 @@ def fruit_vegetable_plants(request):
         })
     except Exception as e:
         logger.error(f"Error in fruit_vegetable_plants: {str(e)}")
-        return redirect('all_categories')
+        return redirect('categories')
 
 def gardening_essentials(request):
     """Gardening Essentials category page"""
@@ -1407,7 +1407,7 @@ def gardening_essentials(request):
         })
     except Exception as e:
         logger.error(f"Error in gardening_essentials: {str(e)}")
-        return redirect('all_categories')
+        return redirect('categories')
 
 def indoor_plants(request):
     """Indoor Plants category page"""
@@ -1425,7 +1425,7 @@ def indoor_plants(request):
         })
     except Exception as e:
         logger.error(f"Error in indoor_plants: {str(e)}")
-        return redirect('all_categories')
+        return redirect('categories')
 
 def outdoor_plants(request):
     """Outdoor Plants category page"""
@@ -1443,7 +1443,7 @@ def outdoor_plants(request):
         })
     except Exception as e:
         logger.error(f"Error in outdoor_plants: {str(e)}")
-        return redirect('all_categories')
+        return redirect('categories')
 
 def flowering_plants(request):
     """Flowering Plants category page"""
@@ -1461,7 +1461,7 @@ def flowering_plants(request):
         })
     except Exception as e:
         logger.error(f"Error in flowering_plants: {str(e)}")
-        return redirect('all_categories')
+        return redirect('categories')
 
 def medicinal_plants(request):
     """Medicinal Plants category page"""
@@ -1479,7 +1479,7 @@ def medicinal_plants(request):
         })
     except Exception as e:
         logger.error(f"Error in medicinal_plants: {str(e)}")
-        return redirect('all_categories')
+        return redirect('categories')
 
 # ================================================================
 # 🛒 MISSING VIEWS - ADDED TO FIX ERRORS
@@ -1900,3 +1900,4 @@ def add_review(request, product_id):
         logger.error(f"Error adding review for product {product_id}: {str(e)}")
         messages.error(request, 'Error adding review.')
         return redirect('product_detail', product_id=product_id)
+    
